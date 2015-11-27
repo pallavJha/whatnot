@@ -55,49 +55,40 @@ public class TheGridSearch {
     }
 
     public static boolean find(char[][] parent, char child[][], int R, int C, int r, int c) {
-        boolean notFound = false;
-        boolean breakDoneByInner = false;
-        boolean toReturn = false;
-        boolean enteredIf = false;
-        
+        boolean found = false;
+
         for (int i = 0 ; i < R ; i++) 
         {
-            for (int j = 0 ; j < C ; j++)
+            for (int j = 0 ; j < C ; j++) 
             {
-                if ((parent[i][j] == child[0][0]) && (i + r - 1 <= R) && (j + c - 1 <= C))
+                if ((parent[i][j] == child[0][0]) && (i + r - 1 <= R) && (j + c - 1 <= C)) 
                 {
-                    for (int l = i ; l < r ; l++) 
+                    outer:
+                    for (int l = i ; l < i + r && l < R ; l++) 
                     {
-                        for (int m = j ; m < c ; m++) 
+                        for (int m = j ; m < j + c && m < C ; m++) 
                         {
                             if (parent[l][m] != child[l - i][m - j]) 
                             {
-                                notFound = true;
-                                break;
+                                break outer;
+                            }
+                            if (parent[l][m] == child[l - i][m - j] && (l + 1 == i + r) && (m + 1 == j + c)) 
+                            {
+                                found = true;
                             }
                         }
-                        if (notFound) 
-                        {
-                            notFound = false;
-                            breakDoneByInner = true;
-                            break;
-                        }
-                    }
-                    enteredIf = true;
-                }
-                if(enteredIf){
-                    if(!notFound && !breakDoneByInner){
-                        break;
                     }
                 }
-            }
-            if (enteredIf) {
-                if (!notFound && !breakDoneByInner) {
-                    toReturn = true;
+                if (found)
+                {
                     break;
                 }
             }
+            if (found) 
+            {
+                break;
+            }
         }
-        return toReturn;
+        return found;
     }
 }
