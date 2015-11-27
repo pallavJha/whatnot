@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class SherlockAndTheBeast {
 
-	public static void main(String... strings) {
+	public static void main1(String... strings) {
 		Scanner in = new Scanner(System.in);
 		int t = in.nextInt();
 		//long start = 0L;
@@ -72,5 +72,9 @@ public class SherlockAndTheBeast {
 		System.out.println("[" + space10 + "]");
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
+	}
+	
+	public static void main(String args[]) {
+	    System.out.println(Boolean.parseBoolean(null));
 	}
 }
