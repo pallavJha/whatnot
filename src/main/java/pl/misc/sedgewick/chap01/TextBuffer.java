@@ -2,7 +2,6 @@ package pl.misc.sedgewick.chap01;
 
 import java.util.Stack;
 
-
 public class TextBuffer<T> {
     private Stack<T> stack1 = null;
     private Stack<T> stack2 = null;
@@ -40,7 +39,7 @@ public class TextBuffer<T> {
         _2To1(k);
         left -= k;
     }
-    
+
     private void _1To2(int k) {
         for (int i = 1 ; i <= k ; i++) {
             T temp_T = stack1.pop();
@@ -58,15 +57,25 @@ public class TextBuffer<T> {
     public String toString() {
         String s = "";
         try {
-            s += stack1.toString();
+            String s1 = stack2.toString().replace("[", "");
+            s1 = s1.replace("]", "");
+
+            s += s1;
+            if (s.length() > 0) {
+                s += ", ";
+            }
         } catch (Exception e) {
-            System.err.println("\n" + "Error in fetching stack1 details.");
+            System.err.println(e + "\n" + "Error in fetching stack2 details.");
         }
         try {
-            s += new StringBuffer(stack2.toString()).reverse().toString();
+            String s1 = stack1.toString().replace("[", "");
+            s1 = s1.replace("]", "");
+
+            s += new StringBuilder(s1).reverse().toString();
         } catch (Exception e) {
-            System.err.println("\n" + "Error in fetching stack2 details.");
+            System.err.println(e + "\n" + "Error in fetching stack1 details.");
         }
+        
         return s;
     }
 
@@ -75,7 +84,6 @@ public class TextBuffer<T> {
         buffer.insert('A');
         buffer.insert('B');
         buffer.insert('C');
-        buffer.left(1);
         buffer.left(1);
         buffer.left(1);
         buffer.insert('D');
