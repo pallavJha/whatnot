@@ -79,7 +79,6 @@ public class FixedCapacityStack<T> implements Iterable<T> {
 		
 	}
 
-	@Override
 	public Iterator<T> iterator() {
 		return new CapacityStackIterator<T>();
 	}
@@ -88,13 +87,11 @@ public class FixedCapacityStack<T> implements Iterable<T> {
 
 		int i = N;
 
-		@Override
 		public boolean hasNext() {
 			return i >= 0;
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public E next() {
 			return (E) a[i--];
 		}
