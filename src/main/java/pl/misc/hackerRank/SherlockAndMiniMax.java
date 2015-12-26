@@ -1,5 +1,6 @@
 package pl.misc.hackerRank;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,19 +10,22 @@ public class SherlockAndMiniMax {
 
 	public static HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
-	public static void main(String...strings){
+	public static void main2(String... strings) {
 		long start = System.currentTimeMillis();
-		
-		for(int i = 70283784; i<= 302962359;i++){
-			for(int j = 0 ; j < 73;j++){
-				
+
+		for (int i = 70283784; i <= 302962359; i++) {
+			for (int j = 0; j < 73; j++) {
+
 			}
 		}
 		long end = System.currentTimeMillis();
-		System.out.println(end-start);
+		System.out.println(end - start);
+
+		int i = 55;
+		System.out.println(~i);
 	}
-	
-	public static void main2(String[] args) throws InterruptedException {
+
+	public static void main(String[] args) throws InterruptedException {
 
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
@@ -34,20 +38,42 @@ public class SherlockAndMiniMax {
 
 		int p = sc.nextInt();
 		int q = sc.nextInt();
-		int temp = p;
 
+		sc.close();
+
+		int temp = p;
+		
+		Arrays.sort(arr);
+		
+		for (int i = 0; i < n; i++) {
+			temp_arr[i] = Math.abs(arr[i] - temp);
+		}
+		
+		int min = findMinimum(temp_arr);
+		if (min != 0) {
+			map.put(temp, min);
+		}
+		System.out.println(temp);
+		printArray(temp_arr);
+		System.out.println(min);
+		temp++;
+		
+		
 		while (temp <= q) {
-			
-			for (int i = 0; i < arr.length; i++) {
-				temp_arr[i] = Math.abs(arr[i] - temp);
+			for (int i = 0; i < n; i++) {
+				temp_arr[i] = Math.abs(temp_arr[i] - 1);
 			}
-			int min = findMinimum(temp_arr);
+			
+			min = findMinimum(temp_arr);
 			if (min != 0) {
 				map.put(temp, min);
 			}
+			System.out.println(temp);
+			printArray(temp_arr);
+			System.out.println(min);
 			temp++;
 		}
-		
+
 		int max = findMaximumFromMapVal(map);
 		printMinimum(map, max);
 	}
@@ -76,5 +102,12 @@ public class SherlockAndMiniMax {
 				break;
 			}
 		}
+	}
+	
+	public static void printArray(int[] arr){
+		for(int i = 0 ; i < arr.length;i++){
+			System.out.print(arr[i]+" ");
+		}
+		System.out.println();
 	}
 }
