@@ -12,10 +12,6 @@
  */
 package pl.misc.hackerRank;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class TruckTour {
@@ -23,24 +19,78 @@ public class TruckTour {
 	public static void main(String args[]) {
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
-		int petrol[] = new int[n];
-		int distance[] = new int[n];
-		Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
-		
-		
+		CircularQueue queue = new CircularQueue();
+
 		for (int i = 0; i < n; i++) {
-			petrol[i] = sc.nextInt();
-			distance[i] = sc.nextInt();
+			long arr[] = new long[3];
+			arr[0] = new Long(i);
+			arr[1] = sc.nextLong();
+			arr[2] = sc.nextLong();
+			queue.enQueue(arr);
 		}
 		sc.close();
-		
-		for (int i = 0; i < n; i++) {
-			if (petrol[i] > distance[i]) {
-				indexMap.put(petrol[i]-distance[i], i);
+
+		// queue.traverse();
+		queue.doTheTour();
+	}
+}
+
+class CircularQueue {
+
+	private class Node {
+		long[] arr;
+		Node next;
+
+		public Node(long[] arr) {
+			this.arr = arr;
+			this.next = null;
+		}
+	}
+
+	Node start, end;
+
+	public void enQueue(long arr[]) {
+		Node node = new Node(arr);
+		if (start == null && end == null) {
+			start = end = node;
+		} else {
+			end.next = node;
+			end = node;
+		}
+		end.next = start;
+	}
+
+	public void traverse() {
+		Node temp = start;
+		traverseLoop: while (temp != null) {
+			System.out.println(temp.arr[0] + " " + temp.arr[1] + " "
+					+ temp.arr[2]);
+			temp = temp.next;
+			if (temp == start) {
+				break traverseLoop;
 			}
 		}
-		
-		ArrayList<Integer> list = new ArrayList<Integer>(indexMap.keySet());
-		System.out.println(indexMap.get(Collections.max(list)));
+	}
+
+	public void doTheTour() {
+		Node point = start;
+		Node temp = point;
+		long totalPetrol = 0L;
+		while (temp != null) {
+			totalPetrol += temp.arr[1];
+			if (totalPetrol < temp.arr[2]) {
+				temp = temp.next;
+				point = temp;
+				totalPetrol = 0L;
+				continue;
+			} else {
+				totalPetrol -= temp.arr[2];
+				temp = temp.next;
+			}
+			if (temp == point) {
+				System.out.println(point.arr[0]);
+				break;
+			}
+		}
 	}
 }
