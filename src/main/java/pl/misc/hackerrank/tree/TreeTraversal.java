@@ -10,7 +10,9 @@
 package pl.misc.hackerrank.tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 public class TreeTraversal {
@@ -27,6 +29,8 @@ public class TreeTraversal {
 		postOrder(root);
 		System.out.println();
 		inOrder(root);
+		System.out.println();
+		levelOrder(root);
 	}
 	
 	static public void preOrder(TreeNode root) {
@@ -108,6 +112,7 @@ public class TreeTraversal {
 		}
 	}
 	
+	
 	static public void inOrder_processed(TreeNode root){
 		Stack<TreeNode> stack = new Stack<TreeNode>();
 		TreeNode current = root;
@@ -120,6 +125,37 @@ public class TreeTraversal {
 		    System.out.print(current.data+" ");
 		    current = current.right;
 		  }
+		}
+	}
+	
+	/*
+	 *	        3
+	 *  	  /   \
+	 * 	     5     2
+	 *      / \   /
+	 *     1   4 6
+	 *     
+	 *     3 5 2 1 4 6
+	 */	
+	static public void levelOrder(TreeNode root){
+		TreeNode temp = root;
+		Queue<TreeNode> tempQueue, thisQueue = new LinkedList<TreeNode>(), nextQueue = new LinkedList<TreeNode>();
+		
+		thisQueue.add(temp);
+		while(!thisQueue.isEmpty()){
+			temp = thisQueue.poll();
+			System.out.print(temp.data +" ");
+			if(temp.left != null){
+				nextQueue.add(temp.left);
+			}
+			if(temp.right != null){
+				nextQueue.add(temp.right);
+			}
+			if(thisQueue.isEmpty()){
+				tempQueue = thisQueue;
+				thisQueue = nextQueue;
+				nextQueue = tempQueue;
+			}
 		}
 	}
 }
