@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class SwapNodes {
 
@@ -75,6 +76,9 @@ public class SwapNodes {
 			TreeNode temp = queue.poll();
 			while (temp == null) {
 				temp = queue.poll();
+				if(temp != null){
+					continue;
+				}
 				if (queue.isEmpty()) {
 					break outer;
 				}
@@ -97,9 +101,9 @@ public class SwapNodes {
 
 		TreeTraversal.inOrder(root);
 		System.out.println();
-		TreeTraversal.preOrder(root);
-		System.out.println();
-		System.out.println(TreeHeight.calculateHeight(root));
+		//TreeTraversal.preOrder(root);
+		//System.out.println();
+		//System.out.println(TreeHeight.calculateHeight(root));
 		swapNode(root, K);
 	}
 	
@@ -129,6 +133,45 @@ public class SwapNodes {
 			}
 		}
 		
-		System.out.println(queueList);
+		//System.out.println(queueList);
+		//System.out.println(queueList.size());
+		
+		int height = queueList.size();
+		
+		for (int i = 0; i < K.length; i++) {
+			for (int j = 1; j < height; j++) {
+				int queueNumber = j * K[i];
+				if (queueNumber < height) {
+					Queue<TreeNode> currentQueue = queueList.get(queueNumber - 1);
+					Queue<TreeNode> tempQueue = new LinkedList<TreeNode>();
+					while (!currentQueue.isEmpty()) {
+						TreeNode tempNode = currentQueue.poll();
+						TreeNode a = tempNode.left;
+						tempNode.left = tempNode.right;
+						tempNode.right = a;
+						tempQueue.add(tempNode);
+					}
+					currentQueue = tempQueue;
+					queueList.set(queueNumber-1, currentQueue);
+				}
+			}
+			inOrder_processed(root);
+			System.out.println();
+		}
+	}
+	
+	static public void inOrder_processed(TreeNode root){
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		TreeNode current = root;
+		while(current != null || !stack.isEmpty()){
+		  if(current != null){
+		    stack.push(current);
+		    current = current.left;
+		  } else if(!stack.isEmpty()) {
+		    current = stack.pop();
+		    System.out.print(current.data+" ");
+		    current = current.right;
+		  }
+		}
 	}
 }
