@@ -1,6 +1,7 @@
 package pl.misc.hackerRank.tree;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -99,5 +100,35 @@ public class SwapNodes {
 		TreeTraversal.preOrder(root);
 		System.out.println();
 		System.out.println(TreeHeight.calculateHeight(root));
+		swapNode(root, K);
+	}
+	
+	public static void swapNode(TreeNode root, int[] K) {
+		TreeNode temp = root;
+		Queue<TreeNode> tempList = null, thisList = new LinkedList<TreeNode>(), nextList = new LinkedList<TreeNode>();
+		List<Queue<TreeNode>> queueList = new LinkedList<Queue<TreeNode>>();
+		thisList.add(temp);
+		queueList.add(new LinkedList<TreeNode>(thisList));
+		TreeNode node = null;
+
+		while (!thisList.isEmpty()) {
+			node = thisList.poll();
+			if (node.left != null) {
+				nextList.add(node.left);
+			}
+			if (node.right != null) {
+				nextList.add(node.right);
+			}
+			if (thisList.isEmpty()) {
+				tempList = thisList;
+				thisList = nextList;
+				nextList = tempList;
+				if (!thisList.isEmpty()) {
+					queueList.add(new LinkedList<TreeNode>(thisList));
+				}
+			}
+		}
+		
+		System.out.println(queueList);
 	}
 }
