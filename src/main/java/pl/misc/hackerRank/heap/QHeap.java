@@ -1,6 +1,6 @@
 package pl.misc.hackerRank.heap;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,9 +9,9 @@ public class QHeap {
 	public static void main(String args[]) {
 		Scanner sc = new Scanner(System.in);
 		Heap heap = new Heap();
-		List<Integer> outputList = new ArrayList<Integer>();
+		List<Integer> outputList = new LinkedList<Integer>();
 		int N = sc.nextInt();
-
+		
 		for (int i = 0; i < N; i++) {
 			int input = sc.nextInt();
 			int data = 0;

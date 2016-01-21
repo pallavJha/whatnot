@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-
 public class Heap {
 
 	public HeapNode root;
@@ -18,8 +17,9 @@ public class Heap {
 			root = node;
 		} else {
 			HeapNode temp = root;
+			Stack<HeapNode> stack = new Stack<HeapNode>();
 			while (temp != null) {
-				Stack<HeapNode> stack = new Stack<HeapNode>();
+				
 				if (temp.left != null) {
 					stack.add(temp.left);
 				} else {
@@ -51,8 +51,7 @@ public class Heap {
 				temp.parent.data = temp.data;
 				temp.data = a;
 				temp = temp.parent;
-			}
-			else{
+			} else {
 				break;
 			}
 		}
@@ -76,28 +75,44 @@ public class Heap {
 			while (true) {
 				if (searchNode.left != null && searchNode.right != null) {
 					if (searchNode.left.data < searchNode.right.data) {
+						if (searchNode.left.data < searchNode.data) {
+							int temp = searchNode.data;
+							searchNode.data = searchNode.left.data;
+							searchNode.left.data = temp;
+							searchNode = searchNode.left;
+						} else {
+							break;
+						}
+					} else {
+						if (searchNode.right.data < searchNode.data) {
+							int temp = searchNode.data;
+							searchNode.data = searchNode.right.data;
+							searchNode.right.data = temp;
+							searchNode = searchNode.right;
+						} else {
+							break;
+						}
+					}
+				} else if (searchNode.left == null && searchNode.right == null) {
+					break;
+				} else if (searchNode.left == null && searchNode.right != null) {
+					if (searchNode.right.data < searchNode.data) {
+						int temp = searchNode.data;
+						searchNode.data = searchNode.right.data;
+						searchNode.right.data = temp;
+						searchNode = searchNode.right;
+					} else {
+						break;
+					}
+				} else if (searchNode.left != null && searchNode.right == null) {
+					if (searchNode.left.data < searchNode.data) {
 						int temp = searchNode.data;
 						searchNode.data = searchNode.left.data;
 						searchNode.left.data = temp;
 						searchNode = searchNode.left;
 					} else {
-						int temp = searchNode.data;
-						searchNode.data = searchNode.right.data;
-						searchNode.right.data = temp;
-						searchNode = searchNode.right;
+						break;
 					}
-				} else if (searchNode.left == null && searchNode.right == null) {
-					break;
-				} else if (searchNode.left == null && searchNode.right != null) {
-					int temp = searchNode.data;
-					searchNode.data = searchNode.right.data;
-					searchNode.right.data = temp;
-					searchNode = searchNode.right;
-				} else if (searchNode.left != null && searchNode.right == null) {
-					int temp = searchNode.data;
-					searchNode.data = searchNode.left.data;
-					searchNode.left.data = temp;
-					searchNode = searchNode.left;
 				}
 			}
 		}
@@ -137,8 +152,8 @@ public class Heap {
 		}
 		return n;
 	}
-	
-	public int min(){
+
+	public int min() {
 		return root.data;
 	}
 }

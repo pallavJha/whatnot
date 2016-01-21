@@ -38,14 +38,22 @@ public class StockMaximize {
 		sc.close();
 		
 		for (int i = 0; i < arr.length; i++) {
-			for (int j = 0; j < arr[i].length - 1; j++) {
-				if (arr[i][j] < arr[i][j + 1]) {
-					noOfShares++;
-					expense += arr[i][j];
-				} 
-				else if (arr[i][j] > arr[i][j + 1]) {
-					earning += (noOfShares * arr[i][j]);
-					noOfShares = 0;
+			for (int j = 0; j < arr[i].length; j++) {
+				if(j == (arr[i].length -1)){
+					if(arr[i][j] > arr[i][j-1]){
+						earning += (noOfShares * arr[i][j]);
+						noOfShares = 0;
+					}
+				}
+				else{
+					if (arr[i][j] < arr[i][j + 1]) {
+						noOfShares++;
+						expense += arr[i][j];
+					} 
+					else if (arr[i][j] > arr[i][j + 1]) {
+						earning += (noOfShares * arr[i][j]);
+						noOfShares = 0;
+					}
 				}
 			}
 			System.out.println(earning - expense);
