@@ -25,20 +25,20 @@ public class StockMaximize {
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		int noOfShares = 0, expense = 0, earning = 0;
+		long noOfShares = 0, expense = 0, earning = 0;
 		int n = sc.nextInt();
-		int arr[][] = new int[n][];
+		long arr[][] = new long[n][];
 		for (int i = 0; i < n; i++) {
 			int arr_size = sc.nextInt();
-			arr[i] = new int[arr_size];
+			arr[i] = new long[arr_size];
 			for (int j = 0; j < arr_size; j++) {
-				arr[i][j] = sc.nextInt();
+				arr[i][j] = sc.nextLong();
 			}
 		}
 		sc.close();
 		
 		for (int i = 0; i < arr.length; i++) {
-			for (int j = 0; j < arr[i].length; j++) {
+			/*for (int j = 0; j < arr[i].length; j++) {
 				if(j == (arr[i].length -1)){
 					if(arr[i][j] > arr[i][j-1]){
 						earning += (noOfShares * arr[i][j]);
@@ -55,9 +55,43 @@ public class StockMaximize {
 						noOfShares = 0;
 					}
 				}
-			}
+			}*/
+			System.out.println(maxProfitStrategy(arr[i]));
 			System.out.println(earning - expense);
 			earning = expense = noOfShares = 0;
 		}
+	}
+	
+	public static long maxProfitStrategy(long[] a) {
+	    int n = a.length;
+	    int memo[] = new int[n];
+	    memo[0] = -1;
+	    for (int i = 1; i < n; i++) {
+	        int j = i - 1;
+	        while (a[j] < a[i] && memo[j] != -1) {
+	            j = memo[j];
+	        }
+	        if (a[j] > a[i]) {
+	            memo[i] = j;
+	        } else {
+	            memo[i] = memo[j];
+	        }
+	    }
+	    return calculateProfit(a,memo);
+	}
+
+	private static long calculateProfit(long[] a, int[] memo) {
+	    long profit = 0;
+	    int n = a.length;
+	    for (int i = n - 1; i > 0; ) {
+	        int end = i;
+	        int start = memo[i] + 1;
+
+	        for (int j = start; j < end; j++) {
+	            profit += a[end] - a[j];
+	        }
+	        i = memo[i];
+	    }
+	    return profit;
 	}
 }
