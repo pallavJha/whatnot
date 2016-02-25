@@ -1,6 +1,6 @@
 /*
 	JS for print the DOM structure in console along with alert
-	The output of this page is in javascript-DOM-tree-output.txt(sibling file)
+	The output of this script when applied on this link is in javascript-DOM-tree-output.txt(sibling file)
 */
 var strings = "";
 function carryOn(node, depth){
