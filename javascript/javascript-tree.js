@@ -16,11 +16,11 @@ function carryOn(node, depth){
     }
     catch(err){
 	  console.log(depth);	
-      console.error(err);
+      	  console.error(err);
     }
     var childNodes = node.children;
     var childCount = node.childElementCount;
-	var loopCounter = 0;
+    var loopCounter = 0;
     for (loopCounter = 0; loopCounter < childCount; loopCounter++) { 
       carryOn(childNodes[loopCounter], depth);
     }
