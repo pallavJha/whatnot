@@ -2,23 +2,27 @@ package pl.misc.hackerRank;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DetectHTMLTags {
+public class DetectTheEmailAddresses {
 
     public static void main(String... args) {
 
         Scanner sc = new Scanner(System.in);
-        LinkedList<Integer> indexes = new LinkedList<Integer>();
+        Map<Integer, Integer> indexes = new LinkedHashMap<Integer, Integer>();
         List<String> output = new LinkedList<String>();
         int inputNumber = sc.nextInt();
         String str = "";
-        Pattern tagPattern = Pattern.compile("<\\s*[a-zA-Z0-9]\\s*");
+        Pattern tagPattern = Pattern.compile("[\\w.-]+@\\w+\\.[\\w-]*(\\.[a-zA-Z0-9]+){0,15}");
         for (int i = 0 ; i < inputNumber ; i++) {
             String s = sc.nextLine();
             if (s.trim().length() == 0) {
@@ -28,20 +32,11 @@ public class DetectHTMLTags {
         }
         Matcher matcher = tagPattern.matcher(str);
         while(matcher.find()){
-            indexes.add(matcher.start());
+            indexes.put(matcher.start(), matcher.end());
         }
         sc.close();
-		for (Integer index : indexes) {
-			String tag = "";
-			here:for (int i = index + 1; i < str.length(); i++) {
-				if(str.charAt(i) != ' ' && str.charAt(i) != '>'){
-					tag += str.charAt(i); 
-				}
-				else{
-					break here;
-				}
-			}
-			output.add(tag);
+		for (Entry<Integer, Integer> index : indexes.entrySet()) {
+			output.add(str.substring(index.getKey(), index.getValue()));
 		}
 		output = new ArrayList<String>(new LinkedHashSet<String>(output));
         Collections.sort(output);
