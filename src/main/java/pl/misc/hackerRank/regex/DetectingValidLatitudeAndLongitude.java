@@ -13,7 +13,7 @@ public class DetectingValidLatitudeAndLongitude {
         Scanner sc = new Scanner(System.in);
         List<String> output = new LinkedList<String>();
         int inputNumber = sc.nextInt();
-        Pattern tagPattern = Pattern.compile("\\([-\\+]{0,1}(\\d\\d)(((\\.){0})|(\\.{1}\\d+)), [-\\+]{0,1}((180((\\.){0}|(\\.{1}0*)))|(1{0,1}[0-7][0-9](((\\.){0})|((\\.){1}\\d*))))\\)");
+        Pattern tagPattern = Pattern.compile("\\([-\\+]{0,1}((90((\\.{0})|\\.{1}0+))|([0-8]{0,1}\\d(((\\.){0})|((\\.){1}\\d+)))),\\s[-\\+]{0,1}((180((\\.){0}|(\\.{1}0+)))|(((1{1,1}[0-7])|([0-9]{0,1}))[0-9](((\\.){0})|((\\.){1}\\d+))))\\)");
         for (int i = 0 ; i < inputNumber ; i++) {
             String s = sc.nextLine();
             if (s.trim().length() == 0) {
