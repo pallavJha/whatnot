@@ -91,6 +91,10 @@ public class TheMaximumSubArray {
                 negativeTriggered = false;
                 if (old_sum < sum) {
                     old_sum = 0;
+                    if(sum < arr[i]){
+                        sumList.add(sum);
+                        sum = arr[i];
+                    }
                 } else {
                     sumList.add(old_sum);
                     sum = 0;
@@ -98,10 +102,17 @@ public class TheMaximumSubArray {
                 }
             } 
         }
-        max_sum = Collections.max(sumList); 
+        if (sumList.size() > 0) {
+            max_sum = Collections.max(sumList);
+        }
+        else{
+            max_sum = sum;
+        }
+        
         int[] retArr = new int[2];
         retArr[0] = max_sum > sum ? max_sum : sum;
         retArr[1] = non_sum;
+        
         return retArr;
     }
 
