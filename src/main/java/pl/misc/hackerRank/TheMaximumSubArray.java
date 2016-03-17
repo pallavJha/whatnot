@@ -1,23 +1,27 @@
 package pl.misc.hackerRank;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class TheMaximumSubArray {
-    
+
+    public static final long max_long_here = 100000000L;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        LinkedList<int[]> list = new LinkedList<int[]>();
+        LinkedList<long[]> list = new LinkedList<long[]>();
         int n = sc.nextInt();
         for (int i = 0 ; i < n ; i++) {
             int size = sc.nextInt();
-            int arr[] = new int[size];
+            long arr[] = new long[size];
             for (int j = 0 ; j < size ; j++) {
-                arr[j] = sc.nextInt();
+                arr[j] = sc.nextLong();
             }
             list.add(calculate(arr, size));
+            // consise(arr);
         }
         sc.close();
         for (int i = 0 ; i < list.size() ; i++) {
@@ -25,14 +29,14 @@ public class TheMaximumSubArray {
         }
     }
 
-    public static int[] calculate(int arr[], int size) {
-        int sum = 0, non_sum = 0, max_sum = 0, old_sum = 0;
+    public static long[] calculate(long arr[], int size) {
+        long sum = 0, non_sum = 0, max_sum = 0, old_sum = 0;
         boolean allNegative = true;
         boolean negativeTriggered = false;
-        List<Integer> sumList = new LinkedList<Integer>();
-        
+        List<Long> sumList = new LinkedList<Long>();
+
         if (arr.length == 1) {
-            int[] retArr = new int[2];
+            long[] retArr = new long[2];
             retArr[0] = arr[0];
             retArr[1] = arr[0];
             return retArr;
@@ -46,13 +50,13 @@ public class TheMaximumSubArray {
         }
 
         if (allNegative) {
-            int max = Integer.MIN_VALUE;
+            long max = Long.MIN_VALUE;
             for (int i = 0 ; i < size ; i++) {
                 if (max < arr[i]) {
                     max = arr[i];
                 }
             }
-            int[] retArr = new int[2];
+            long[] retArr = new long[2];
             retArr[0] = max;
             retArr[1] = max;
             return retArr;
@@ -76,13 +80,16 @@ public class TheMaximumSubArray {
                 arr[i] = 0;
             }
         }
+
+        consise(arr);
+
         for (int i = 0 ; i < size ; i++) {
             if (arr[i] >= 0) {
                 non_sum += arr[i];
             }
             sum += arr[i];
             if (arr[i] < 0) {
-                if(old_sum == 0){
+                if (old_sum == 0) {
                     old_sum = sum - arr[i];
                 }
                 negativeTriggered = true;
@@ -91,7 +98,7 @@ public class TheMaximumSubArray {
                 negativeTriggered = false;
                 if (old_sum < sum) {
                     old_sum = 0;
-                    if(sum < arr[i]){
+                    if (sum < arr[i]) {
                         sumList.add(sum);
                         sum = arr[i];
                     }
@@ -100,20 +107,68 @@ public class TheMaximumSubArray {
                     sum = 0;
                     old_sum = 0;
                 }
-            } 
+            }
         }
         if (sumList.size() > 0) {
             max_sum = Collections.max(sumList);
-        }
-        else{
+        } else {
             max_sum = sum;
         }
-        
-        int[] retArr = new int[2];
+
+        long[] retArr = new long[2];
         retArr[0] = max_sum > sum ? max_sum : sum;
         retArr[1] = non_sum;
-        
+
         return retArr;
+    }
+
+    public static void consise(long arr[]) {
+        int capacityDecrease = 0;
+        for (int i = 0 ; i < arr.length - 1 ; i++) {
+            if (isPositive(arr[i]) && isPositive(arr[i + 1])) {
+                arr[i + 1] += arr[i];
+                arr[i] = max_long_here;
+                capacityDecrease++;
+            } else if (isNegative(arr[i]) && isNegative(arr[i + 1])) {
+                arr[i + 1] += arr[i];
+                arr[i] = max_long_here;
+                capacityDecrease++;
+            }
+        }
+        List<Long> list = new ArrayList<Long>(arr.length - capacityDecrease);
+        for (int i = 0 ; i < arr.length ; i++) {
+            if (i > 0 && arr[i] == 0 && arr[i - 1] == 0) {
+                continue;
+            }
+            if (arr[i] != max_long_here) {
+                list.add(arr[i]);
+            }
+        }
+        // printArray(list.toArray());
+        prepare(arr);
+    }
+
+    public static boolean isPositive(long a) {
+        return a >= 0L;
+    }
+
+    public static boolean isNegative(long a) {
+        return a <= 0L;
+    }
+
+    public static void prepare(long[] arr) {
+        for (int i = 0 ; i < arr.length ; i++) {
+            if (arr[i] == max_long_here) {
+                arr[i] = 0L;
+            }
+        }
+    }
+
+    public static void printArray(Object[] arr) {
+        for (int i = 0 ; i < arr.length ; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println("\n");
     }
 
 }
