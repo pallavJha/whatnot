@@ -70,7 +70,7 @@ public class TheMaximumSubArray {
             arr[size - 1] = 0;
         }
 
-        for (int i = 1 ; i < size ; i++) {
+        /*for (int i = 1 ; i < size ; i++) {
             if (arr[i] < 0 && arr[i - 1] == 0) {
                 arr[i] = 0;
             }
@@ -79,10 +79,10 @@ public class TheMaximumSubArray {
             if (arr[i] < 0 && arr[i + 1] == 0) {
                 arr[i] = 0;
             }
-        }
+        }*/
 
-        consise(arr);
-
+        arr = consise(arr);
+        size = arr.length;
         for (int i = 0 ; i < size ; i++) {
             if (arr[i] >= 0) {
                 non_sum += arr[i];
@@ -122,30 +122,54 @@ public class TheMaximumSubArray {
         return retArr;
     }
 
-    public static void consise(long arr[]) {
-        int capacityDecrease = 0;
+    public static long[] consise(long arr[]) {
+        int zeroCount = 0;
+        for (int i = 0 ; i < arr.length ; i++) {
+            if (arr[i] == 0L) {
+                zeroCount++;
+            }
+        }
+        if (zeroCount > 0) {
+            long arr2[] = new long[arr.length - zeroCount];
+            int j = 0;
+            for (int i = 0 ; i < arr.length ; i++) {
+                if (arr[i] != 0L) {
+                    arr2[j++] = arr[i];
+                }
+            }
+            arr = arr2;
+        }
+
         for (int i = 0 ; i < arr.length - 1 ; i++) {
             if (isPositive(arr[i]) && isPositive(arr[i + 1])) {
                 arr[i + 1] += arr[i];
-                arr[i] = max_long_here;
-                capacityDecrease++;
+                arr[i] = 0;
             } else if (isNegative(arr[i]) && isNegative(arr[i + 1])) {
                 arr[i + 1] += arr[i];
-                arr[i] = max_long_here;
-                capacityDecrease++;
+                arr[i] = 0;
             }
         }
-        List<Long> list = new ArrayList<Long>(arr.length - capacityDecrease);
+
+        zeroCount = 0;
         for (int i = 0 ; i < arr.length ; i++) {
-            if (i > 0 && arr[i] == 0 && arr[i - 1] == 0) {
-                continue;
-            }
-            if (arr[i] != max_long_here) {
-                list.add(arr[i]);
+            if (arr[i] == 0L) {
+                zeroCount++;
             }
         }
+        if (zeroCount > 0) {
+            long arr2[] = new long[arr.length - zeroCount];
+            int j = 0;
+            for (int i = 0 ; i < arr.length ; i++) {
+                if (arr[i] != 0L) {
+                    arr2[j++] = arr[i];
+                }
+            }
+            arr = arr2;
+        }
+        
+        return arr;
         // printArray(list.toArray());
-        prepare(arr);
+        // prepare(arr);
     }
 
     public static boolean isPositive(long a) {
