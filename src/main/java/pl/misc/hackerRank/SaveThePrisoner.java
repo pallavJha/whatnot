@@ -2,7 +2,6 @@ package pl.misc.hackerRank;
 
 import java.util.Scanner;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 /**
  * @author pallav
@@ -10,6 +9,9 @@ import java.util.stream.LongStream;
  * @since 16/7/16
  */
 public class SaveThePrisoner {
+
+    private SaveThePrisoner(){
+    }
 
     public static final Scanner sc = new Scanner(System.in);
 
@@ -29,7 +31,7 @@ public class SaveThePrisoner {
         int noOfPrisoners = sc.nextInt();
         int noOfSweets = sc.nextInt();
         int startPrisonerId = sc.nextInt();
-        int number = (noOfSweets - 1 + startPrisonerId);
+        int number = noOfSweets - 1 + startPrisonerId;
         if (number > noOfPrisoners) {
             int toReturn = number % noOfPrisoners;
             return toReturn != 0 ? toReturn : noOfPrisoners;
