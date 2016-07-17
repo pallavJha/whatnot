@@ -11,35 +11,41 @@ import java.util.Set;
 
 /**
  * <h6>The Class DateTimeFinder.</h6>
- * 
  * <p>On running the main method the user can find the occurences of a datatype in the specified class <i>z</i></p>
- * 
  * <p>It'll search in all the fields and their subsequent fields till the classes list turns empty.</p>
- * 
  * <p>Currently it finds all the occurences of org.joda.time.DateTime.</p>
- * 
- * @author  Pallav Jha(pallav_kumar71 at yahoo dot com)
+ *
+ * @author Pallav Jha(pallav_kumar71 at yahoo dot com)
  */
 public class ClassInFields {
 
-    /** The ignored classes.
+    private ClassInFields() {
+    }
+
+    /**
+     * The ignored classes.
      * Contains the classes which needs to be ignored.
      */
-    static Set<Class<?>>  ignoredClasses = getWrapperTypes();
-    
-    /** The classes.
+    static Set<Class<?>> ignoredClasses = getWrapperTypes();
+
+    /**
+     * The classes.
      * Contains the fields of the current class, it'll keep on growing.
      */
-    static List<Class<?>> classes        = new ArrayList<Class<?>>();
-    
-    /** The z. 
+    static List<Class<?>> classes = new ArrayList<>();
+
+    /**
+     * The z.
      * Initial Class
      **/
-    static Class<?>       z              = String.class; //SomeClassName;
-    
-    /** The field array. */
-    static Field[]        fieldArray;
-    static Integer i=0;
+    static Class<?> z = String.class;
+
+    /**
+     * The field array.
+     */
+    static Field[] fieldArray;
+    static Integer i = 0;
+
     static {
         classes.add(z);
     }
@@ -58,7 +64,6 @@ public class ClassInFields {
      * Gets the date time.
      *
      * @param z the z
-     * @return the date time
      */
     public static void getDateTime(Class<?> z) {
 
@@ -75,11 +80,11 @@ public class ClassInFields {
                  */
                 if (f.getType().equals(Number.class)) {//SomeClassNameToLookFor;
                     System.out.print(++i);
-                    for(int k = 0 ;k<(5-i.toString().length());k++){
+                    for (int k = 0; k < (5 - i.toString().length()); k++) {
                         System.out.print(" ");
                     }
                     System.out.print(f.getName());
-                    for(int k = 0 ;k<(32-f.getName().length());k++){
+                    for (int k = 0; k < (32 - f.getName().length()); k++) {
                         System.out.print(" ");
                     }
                     System.out.print(f.getType() + "\t");
@@ -94,7 +99,7 @@ public class ClassInFields {
                  *          | |
                  *          | |
                  */
-                
+
                 if (f.getType().equals(List.class) || f.getType().equals(Set.class) || f.getType().equals(HashMap.class)) {
                     ParameterizedType pType = (ParameterizedType) f.getGenericType();
                     try {
@@ -121,7 +126,7 @@ public class ClassInFields {
      */
     public static void extractFields() {
 
-        for (int i = 0 ; i < classes.size() ; i++) {
+        for (int i = 0; i < classes.size(); i++) {
             fieldArray = classes.get(i).getDeclaredFields();
             getDateTime(classes.get(i));
         }
@@ -133,7 +138,7 @@ public class ClassInFields {
      * @return the wrapper types
      */
     public static Set<Class<?>> getWrapperTypes() {
-        Set<Class<?>> ret = new HashSet<Class<?>>();
+        Set<Class<?>> ret = new HashSet<>();
         ret.add(Boolean.class);
         ret.add(Character.class);
         ret.add(Byte.class);

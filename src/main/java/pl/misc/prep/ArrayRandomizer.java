@@ -32,7 +32,7 @@ public class ArrayRandomizer {
 		System.out.println();
 	}
 
-	// Implementing Fisher–Yates shuffle
+	// Implementing Fisher Yates shuffle
 	static void shuffleArray(int[] ar) {
 		// If running on Java 6 or older, use `new Random()` on RHS here
 		Random rnd = ThreadLocalRandom.current();
