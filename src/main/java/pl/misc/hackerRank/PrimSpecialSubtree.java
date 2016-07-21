@@ -38,7 +38,7 @@ public class PrimSpecialSubtree {
             int row = sc.nextInt();
             int col = sc.nextInt();
             int weight = sc.nextInt();
-            if ((adjMatrix[row][col] == 0) || (adjMatrix[row][col] > weight)) {
+            if ((adjMatrix[row][col] == -1) || (adjMatrix[row][col] > weight)) {
                 adjMatrix[row][col] = weight;
                 adjMatrix[col][row] = weight;
             }
@@ -69,18 +69,16 @@ public class PrimSpecialSubtree {
             }
 
             int min = Integer.MAX_VALUE;
-            int nextNode = currentNode;
             for (int i = 1; i <= noOfNodes; i++) {
                 if (!visited[i] && distance[i] < min) {
                     min = distance[i];
-                    nextNode = i;
+                    currentNode = i;
                 }
             }
 
             visited[currentNode] = true;
             minimumDistance += min;
             total++;
-            currentNode = nextNode;
         }
         return minimumDistance;
     }
