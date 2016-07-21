@@ -1,4 +1,4 @@
-package pl.misc.hackerRank;
+package pl.misc.hackerRank.graph;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package pl.misc.hackerRank.dynamic.programming;
+package pl.misc.hackerRank.dp;
 
 import java.util.Scanner;
 

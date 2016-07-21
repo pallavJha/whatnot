@@ -1,4 +1,4 @@
-package pl.misc.hackerRank;
+package pl.misc.hackerRank.graph;
 
 /**
  * @author pallav
