@@ -70,11 +70,11 @@ public class EvenTree {
         int noOfNodesInSubTree = findNoOfNodesInSubTree(i, noOfNodes, adjMatrix);
         if (noOfNodesInSubTree % 2 == 0) {
             int noOfNeighbours = 0;
-            for (int k = 0; k <= noOfNodes; k++) {
-                if (adjMatrix[currentNode][k]) {
-                    noOfNeighbours++;
+                for (int k = 0; k <= noOfNodes; k++) {
+                    if (adjMatrix[currentNode][k]) {
+                        noOfNeighbours++;
+                    }
                 }
-            }
             return noOfNeighbours > 0;
         } else {
             adjMatrix[currentNode][i] = adjMatrix[i][currentNode] = true;
@@ -100,16 +100,16 @@ public class EvenTree {
         queue.add(startNode);
 
 
-        while (!queue.isEmpty()) {
-            currentNode = queue.poll();
-            for (int i = 1; i <= noOfNodes; i++) {
-                if (!visited[i] && adjMatrix[currentNode][i]) {
-                    queue.add(i);
-                    visited[i] = true;
-                    nodesCount++;
+            while (!queue.isEmpty()) {
+                currentNode = queue.poll();
+                for (int i = 1; i <= noOfNodes; i++) {
+                    if (!visited[i] && adjMatrix[currentNode][i]) {
+                        queue.add(i);
+                        visited[i] = true;
+                        nodesCount++;
+                    }
                 }
             }
-        }
         return nodesCount;
     }
 }

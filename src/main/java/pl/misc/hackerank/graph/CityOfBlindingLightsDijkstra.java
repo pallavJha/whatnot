@@ -4,6 +4,16 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 /**
+ * Following Code was done in Dijkstra Algorithm,
+ * which calculates the shortest path from one vertex
+ * to every other vertex which takes a bit longer time
+ * than Floyd-Warshall (All Pair Shortest Path[APSP])
+ * algorithm as the latter find the shortest path to
+ * each node from every other node in one go, so rather
+ * than calculating shortest path for each and every
+ * vertex for every time, Floyd-Warshall algorithm
+ * will be used.
+ *
  * @author pallav
  * @version 1.0
  * @since 23/7/16
@@ -21,9 +31,9 @@ Sample Input
 3 1
 1 4
 */
-public class CityOfBlindingLights {
+public class CityOfBlindingLightsDijkstra {
 
-    private CityOfBlindingLights() {
+    private CityOfBlindingLightsDijkstra() {
     }
 
 
