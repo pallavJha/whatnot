@@ -1,9 +1,6 @@
 package pl.misc.hackerank.graph;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author pallav
@@ -12,7 +9,7 @@ import java.util.Set;
  */
 /*
 Sample Input
-2
+1
 7
 2 0
 5 2
@@ -87,31 +84,90 @@ public class KthAncestor {
 
     private static HashMap<Integer, Integer> nodeParentMap = new HashMap<>();
     private static HashMap<Integer, Node> dataNodeMap = new HashMap<>();
+    private static LinkedList<Integer> output = new LinkedList<>();
 
     public static void main(String... args) {
         Scanner sc = new Scanner(System.in);
         int noOfTestCases = sc.nextInt();
         for (int i = 0; i < noOfTestCases; i++) {
-            Node root = prepareInput(sc);
+            prepareInput(sc);
+            execute(sc);
         }
-
         sc.close();
+
+        output.forEach(System.out::println);
+    }
+
+    private static void execute(Scanner sc) {
+        int noOfQueries = sc.nextInt();
+        for (int i = 0; i < noOfQueries; i++) {
+            int operation = sc.nextInt();
+            switch (operation) {
+                case 0:
+                    fetchNewInput(sc);
+                    break;
+                case 1:
+                    deleteNode(sc);
+                    break;
+                case 2:
+                    findKthParent(sc);
+                    break;
+            }
+        }
+    }
+
+    private static void fetchNewInput(Scanner sc) {
+        int newNodeData = sc.nextInt();
+        int parentData = sc.nextInt();
+        Node node = new Node(newNodeData);
+        nodeParentMap.put(newNodeData, parentData);
+        dataNodeMap.put(newNodeData, node);
+        dataNodeMap.get(parentData).children.add(node);
+    }
+
+    private static void deleteNode(Scanner sc) {
+        int delNodeData = sc.nextInt();
+
+        int parentData = nodeParentMap.get(delNodeData);
+        nodeParentMap.remove(delNodeData);
+
+        Node nodeToDelete = dataNodeMap.get(delNodeData);
+        dataNodeMap.remove(delNodeData);
+        dataNodeMap.get(parentData).children.remove(nodeToDelete);
+    }
+
+    private static void findKthParent(Scanner sc) {
+        int nodeData = sc.nextInt();
+        int K = sc.nextInt();
+        for (int i = 0; i < K; i++) {
+            Integer parentData = nodeParentMap.get(nodeData);
+            if (parentData != null) {
+                nodeData = parentData;
+            }
+            else {
+                nodeData = 0;
+                break;
+            }
+        }
+        output.add(nodeData);
     }
 
     private static Node prepareInput(Scanner sc) {
         Node root = null;
         int noOfNodes = sc.nextInt();
         for (int i = 0; i < noOfNodes; i++) {
-            int x = sc.nextInt();
-            int y = sc.nextInt();
-            Node node = new Node(x);
-            if (y == 0) {
+            int newNodeData = sc.nextInt();
+            int parentData = sc.nextInt();
+            Node node = new Node(newNodeData);
+            if (parentData == 0) {
                 root = node;
-                dataNodeMap.put(x, node);
-            }
-            else {
-                nodeParentMap.put(x, y);
-                dataNodeMap.get(y).children.add(node);
+                dataNodeMap.put(newNodeData, node);
+            } else {
+                nodeParentMap.put(newNodeData, parentData);
+                dataNodeMap.put(newNodeData, node);
+                Node parentNode = dataNodeMap.get(parentData);
+                node.parent = parentNode;
+                parentNode.children.add(node);
             }
         }
         return root;
