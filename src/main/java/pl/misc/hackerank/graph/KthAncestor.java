@@ -31,61 +31,20 @@ Sample Input
 2 9 1
 */
 
-
-class Node implements Comparable<Node> {
-    /**
-     * Value of the node
-     */
-    public int data = 0;
-
-    /**
-     * Children of the node
-     */
-    public Set<Node> children = new HashSet<>();
-
-    /**
-     * Parent of the node
-     */
-    public Node parent;
-
-    public Node() {
-    }
-
-    public Node(int data) {
-        this.data = data;
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        return Integer.compare(this.data, o.data);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Node)) {
-            return false;
-        }
-
-        Node node = (Node) o;
-        return data == node.data;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return data;
-    }
-}
-
 public class KthAncestor {
 
+    private KthAncestor() {
+    }
+
     private static HashMap<Integer, Integer> nodeParentMap = new HashMap<>();
-    private static HashMap<Integer, Node> dataNodeMap = new HashMap<>();
+    private static HashMap<Integer, List<Integer>> parentListMap = new HashMap<>();
     private static LinkedList<Integer> output = new LinkedList<>();
 
+    /**
+     * Main method
+     *
+     * @param args run time args
+     */
     public static void main(String... args) {
         Scanner sc = new Scanner(System.in);
         int noOfTestCases = sc.nextInt();
@@ -102,76 +61,86 @@ public class KthAncestor {
         int noOfQueries = sc.nextInt();
         for (int i = 0; i < noOfQueries; i++) {
             int operation = sc.nextInt();
-            switch (operation) {
-                case 0:
-                    fetchNewInput(sc);
-                    break;
-                case 1:
-                    deleteNode(sc);
-                    break;
-                case 2:
-                    findKthParent(sc);
-                    break;
+            if (operation == 0) {
+                fetchNewInput(sc);
+
+            } else if (operation == 1) {
+                deleteNode(sc);
+
+            } else if (operation == 2) {
+                findKthParent(sc);
+
             }
         }
     }
 
     private static void fetchNewInput(Scanner sc) {
-        int newNodeData = sc.nextInt();
         int parentData = sc.nextInt();
-        Node node = new Node(newNodeData);
+        int newNodeData = sc.nextInt();
         nodeParentMap.put(newNodeData, parentData);
-        dataNodeMap.put(newNodeData, node);
-        dataNodeMap.get(parentData).children.add(node);
+        List<Integer> parentList = new LinkedList<>();
+        parentList.add(parentData);
+        parentList.addAll(parentListMap.get(parentListMap.get(parentData)));
+        parentListMap.put(newNodeData, parentList);
     }
 
     private static void deleteNode(Scanner sc) {
         int delNodeData = sc.nextInt();
-
-        int parentData = nodeParentMap.get(delNodeData);
         nodeParentMap.remove(delNodeData);
-
-        Node nodeToDelete = dataNodeMap.get(delNodeData);
-        dataNodeMap.remove(delNodeData);
-        dataNodeMap.get(parentData).children.remove(nodeToDelete);
+        parentListMap.remove(delNodeData);
     }
 
     private static void findKthParent(Scanner sc) {
         int nodeData = sc.nextInt();
         int K = sc.nextInt();
-        for (int i = 0; i < K; i++) {
-            Integer parentData = nodeParentMap.get(nodeData);
-            if (parentData != null) {
-                nodeData = parentData;
-            }
-            else {
-                nodeData = 0;
-                break;
-            }
+        List<Integer> parents = parentListMap.get(nodeData);
+        if (parents == null || parents.size() < K) {
+            nodeData = 0;
+        }
+        else {
+            nodeData = parents.get(K-1);
         }
         output.add(nodeData);
     }
 
-    private static Node prepareInput(Scanner sc) {
-        Node root = null;
+    private static void prepareInput(Scanner sc) {
         int noOfNodes = sc.nextInt();
+        Map<Integer, Integer> missedPairs = new HashMap<>();
         for (int i = 0; i < noOfNodes; i++) {
             int newNodeData = sc.nextInt();
             int parentData = sc.nextInt();
-            Node node = new Node(newNodeData);
-            if (parentData == 0) {
-                root = node;
-                dataNodeMap.put(newNodeData, node);
-            } else {
-                nodeParentMap.put(newNodeData, parentData);
-                dataNodeMap.put(newNodeData, node);
-                Node parentNode = dataNodeMap.get(parentData);
-                node.parent = parentNode;
-                parentNode.children.add(node);
+            if (parentData != 0) {
+                if (nodeParentMap.get(parentData) != null) {
+                    nodeParentMap.put(newNodeData, parentData);
+                    List<Integer> parentList = new LinkedList<>();
+                    if (parentData != 0) {
+                        parentList.add(parentData);
+                        parentList.addAll(parentListMap.get(parentListMap.get(parentData)));
+                    }
+                    parentListMap.put(newNodeData, parentList);
+                } else {
+                    missedPairs.put(newNodeData, parentData);
+                }
             }
         }
-        return root;
+
+        while (!missedPairs.isEmpty()) {
+            addMissedNodes(missedPairs);
+        }
     }
 
-
+    private static void addMissedNodes(Map<Integer, Integer> missedPairs) {
+        for (Map.Entry<Integer, Integer> pair : missedPairs.entrySet()) {
+            int newNodeData = pair.getKey();
+            int parentData = pair.getValue();
+            if (nodeParentMap.get(parentData) != null) {
+                nodeParentMap.put(newNodeData, parentData);
+                List<Integer> parentList = new LinkedList<>();
+                parentList.add(parentData);
+                parentList.addAll(parentListMap.get(parentListMap.get(parentData)));
+                parentListMap.put(newNodeData, parentList);
+                missedPairs.remove(newNodeData);
+            }
+        }
+    }
 }
