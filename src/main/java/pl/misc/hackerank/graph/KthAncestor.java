@@ -80,7 +80,7 @@ public class KthAncestor {
         nodeParentMap.put(newNodeData, parentData);
         List<Integer> parentList = new LinkedList<>();
         parentList.add(parentData);
-        parentList.addAll(parentListMap.get(parentListMap.get(parentData)));
+        parentList.addAll(parentListMap.get(parentData));
         parentListMap.put(newNodeData, parentList);
     }
 
@@ -96,9 +96,8 @@ public class KthAncestor {
         List<Integer> parents = parentListMap.get(nodeData);
         if (parents == null || parents.size() < K) {
             nodeData = 0;
-        }
-        else {
-            nodeData = parents.get(K-1);
+        } else {
+            nodeData = parents.get(K - 1);
         }
         output.add(nodeData);
     }
@@ -113,14 +112,17 @@ public class KthAncestor {
                 if (nodeParentMap.get(parentData) != null) {
                     nodeParentMap.put(newNodeData, parentData);
                     List<Integer> parentList = new LinkedList<>();
-                    if (parentData != 0) {
-                        parentList.add(parentData);
-                        parentList.addAll(parentListMap.get(parentListMap.get(parentData)));
-                    }
+                    parentList.add(parentData);
+                    parentList.addAll(parentListMap.get(parentData));
                     parentListMap.put(newNodeData, parentList);
                 } else {
                     missedPairs.put(newNodeData, parentData);
                 }
+            }
+            else {
+                nodeParentMap.put(newNodeData, parentData);
+                List<Integer> parentList = new LinkedList<>();
+                parentListMap.put(newNodeData, parentList);
             }
         }
 
@@ -137,7 +139,7 @@ public class KthAncestor {
                 nodeParentMap.put(newNodeData, parentData);
                 List<Integer> parentList = new LinkedList<>();
                 parentList.add(parentData);
-                parentList.addAll(parentListMap.get(parentListMap.get(parentData)));
+                parentList.addAll(parentListMap.get(parentData));
                 parentListMap.put(newNodeData, parentList);
                 missedPairs.remove(newNodeData);
             }
