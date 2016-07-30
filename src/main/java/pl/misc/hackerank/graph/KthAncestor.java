@@ -30,16 +30,25 @@ Sample Input
 2 11 1
 2 9 1
 */
+class Node {
+    public int data;
+    public Node next;
+
+    public static Node build(int data) {
+        Node node = new Node();
+        node.data = data;
+        return node;
+    }
+}
 
 public class KthAncestor {
 
-    private KthAncestor() {
-    }
-
     private static HashMap<Integer, Integer> nodeParentMap = new HashMap<>();
-    private static HashMap<Integer, List<Integer>> parentListMap = new HashMap<>();
+    private static HashMap<Integer, Node> parentListMap = new HashMap<>();
     private static LinkedList<Integer> output = new LinkedList<>();
 
+    private KthAncestor() {
+    }
     /**
      * Main method
      *
@@ -78,10 +87,9 @@ public class KthAncestor {
         int parentData = sc.nextInt();
         int newNodeData = sc.nextInt();
         nodeParentMap.put(newNodeData, parentData);
-        List<Integer> parentList = new LinkedList<>();
-        parentList.add(parentData);
-        parentList.addAll(parentListMap.get(parentData));
-        parentListMap.put(newNodeData, parentList);
+        Node parent = Node.build(parentData);
+        parent.next = parentListMap.get(parentData);
+        parentListMap.put(newNodeData, parent);
     }
 
     private static void deleteNode(Scanner sc) {
@@ -93,11 +101,18 @@ public class KthAncestor {
     private static void findKthParent(Scanner sc) {
         int nodeData = sc.nextInt();
         int K = sc.nextInt();
-        List<Integer> parents = parentListMap.get(nodeData);
-        if (parents == null || parents.size() < K) {
+        Node parent = parentListMap.get(nodeData);
+        if (parent == null) {
             nodeData = 0;
         } else {
-            nodeData = parents.get(K - 1);
+            for (int i = 0; i < K; i++) {
+                if (parent == null) {
+                    nodeData = 0;
+                    break;
+                }
+                nodeData = parent.data;
+                parent = parent.next;
+            }
         }
         output.add(nodeData);
     }
@@ -111,18 +126,15 @@ public class KthAncestor {
             if (parentData != 0) {
                 if (nodeParentMap.get(parentData) != null) {
                     nodeParentMap.put(newNodeData, parentData);
-                    List<Integer> parentList = new LinkedList<>();
-                    parentList.add(parentData);
-                    parentList.addAll(parentListMap.get(parentData));
-                    parentListMap.put(newNodeData, parentList);
+                    Node parent = Node.build(parentData);
+                    parent.next = parentListMap.get(parentData);
+                    parentListMap.put(newNodeData, parent);
                 } else {
                     missedPairs.put(newNodeData, parentData);
                 }
-            }
-            else {
+            } else {
                 nodeParentMap.put(newNodeData, parentData);
-                List<Integer> parentList = new LinkedList<>();
-                parentListMap.put(newNodeData, parentList);
+                parentListMap.put(newNodeData, null);
             }
         }
 
@@ -137,10 +149,9 @@ public class KthAncestor {
             int parentData = pair.getValue();
             if (nodeParentMap.get(parentData) != null) {
                 nodeParentMap.put(newNodeData, parentData);
-                List<Integer> parentList = new LinkedList<>();
-                parentList.add(parentData);
-                parentList.addAll(parentListMap.get(parentData));
-                parentListMap.put(newNodeData, parentList);
+                Node parent = Node.build(parentData);
+                parent.next = parentListMap.get(parentData);
+                parentListMap.put(newNodeData, parent);
                 missedPairs.remove(newNodeData);
             }
         }
