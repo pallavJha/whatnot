@@ -1,4 +1,4 @@
-package pl.misc.hackerank;
+package pl.misc.hackerank.search;
 
 import java.util.Scanner;
 

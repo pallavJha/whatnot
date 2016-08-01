@@ -36,7 +36,7 @@ Sample Output
 204 205 206
 Explanation 
 204 is present in both the arrays. Its frequency in A is 2, while its frequency in B is 3. Similarly, 205 and 206 occur twice in A, but thrice in B. So, these three numbers are our output. Rest of the numbers have same frequency in both the lists.*/
-package pl.misc.hackerank;
+package pl.misc.hackerank.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -2,37 +2,10 @@ package pl.misc.hackerank.graph;
 
 import java.util.*;
 
-/**
- * @author pallav
- * @version 1.0
- * @since 29/7/16
- */
-/*
-Sample Input
-1
-7
-2 0
-5 2
-3 5
-7 5
-9 8
-8 2
-6 8
-10
-0 5 15
-2 15 2
-1 3
-0 15 20
-0 20 13
-2 13 4
-2 13 3
-2 6 10
-2 11 1
-2 9 1
-*/
 class Node {
     public int data;
     public Node next;
+    public int length = 0;
 
     public static Node build(int data) {
         Node node = new Node();
@@ -43,12 +16,15 @@ class Node {
 
 public class KthAncestor {
 
+
     private static HashMap<Integer, Integer> nodeParentMap = new HashMap<>();
     private static HashMap<Integer, Node> parentListMap = new HashMap<>();
     private static LinkedList<Integer> output = new LinkedList<>();
 
+
     private KthAncestor() {
     }
+
     /**
      * Main method
      *
@@ -72,13 +48,10 @@ public class KthAncestor {
             int operation = sc.nextInt();
             if (operation == 0) {
                 fetchNewInput(sc);
-
             } else if (operation == 1) {
                 deleteNode(sc);
-
             } else if (operation == 2) {
                 findKthParent(sc);
-
             }
         }
     }
@@ -89,23 +62,24 @@ public class KthAncestor {
         nodeParentMap.put(newNodeData, parentData);
         Node parent = Node.build(parentData);
         parent.next = parentListMap.get(parentData);
+        parent.length = parent.next == null ? 1 : parent.next.length + 1;
         parentListMap.put(newNodeData, parent);
     }
 
     private static void deleteNode(Scanner sc) {
         int delNodeData = sc.nextInt();
-        nodeParentMap.remove(delNodeData);
-        parentListMap.remove(delNodeData);
+        nodeParentMap.put(delNodeData, null);
+        parentListMap.put(delNodeData, null);
     }
 
     private static void findKthParent(Scanner sc) {
         int nodeData = sc.nextInt();
-        int K = sc.nextInt();
+        int k = sc.nextInt();
         Node parent = parentListMap.get(nodeData);
-        if (parent == null) {
+        if (parent == null || parent.length < k) {
             nodeData = 0;
         } else {
-            for (int i = 0; i < K; i++) {
+            for (int i = 0; i < k; i++) {
                 if (parent == null) {
                     nodeData = 0;
                     break;
@@ -128,6 +102,7 @@ public class KthAncestor {
                     nodeParentMap.put(newNodeData, parentData);
                     Node parent = Node.build(parentData);
                     parent.next = parentListMap.get(parentData);
+                    parent.length = parent.next == null ? 1 : parent.next.length + 1;
                     parentListMap.put(newNodeData, parent);
                 } else {
                     missedPairs.put(newNodeData, parentData);
@@ -151,6 +126,7 @@ public class KthAncestor {
                 nodeParentMap.put(newNodeData, parentData);
                 Node parent = Node.build(parentData);
                 parent.next = parentListMap.get(parentData);
+                parent.length = parent.next == null ? 1 : parent.next.length + 1;
                 parentListMap.put(newNodeData, parent);
                 missedPairs.remove(newNodeData);
             }
