@@ -25,8 +25,9 @@ public class ConnectedCellInAGrid {
         Scanner sc = new Scanner(System.in);
         int rows = sc.nextInt();
         int cols = sc.nextInt();
-        int[][] arr = collectInput(rows, cols, sc);
-        System.out.println(findLargestRegion(rows, cols, arr));
+        int[][] inputArray = collectInput(rows, cols, sc);
+        int[][] adjMatrix = buildAdjMatrix(rows, cols, inputArray);
+        System.out.println(findLargestRegion(rows, cols, adjMatrix));
         sc.close();
     }
 
@@ -40,32 +41,87 @@ public class ConnectedCellInAGrid {
         return arr;
     }
 
-    private static int[][] prepareAdjMatrix(int[][] arr) {
-        int[][] adjMatrix = new int[][]
+    private static int[][] buildAdjMatrix(int rows, int cols, int[][] arr) {
+        int noOfNodes = rows * cols;
+        int[][] adjMatrix = new int[noOfNodes][noOfNodes];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int adjX = getNodeIndex(cols, i, j);
+                if (arr[i][j] == 1) {
+                    if (i > 0 && j > 0 && arr[i - 1][j - 1] == 1) {
+                        int adjY = getNodeIndex(cols, i - 1, j - 1);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if (i > 0 && arr[i - 1][j] == 1) {
+                        int adjY = getNodeIndex(cols, i - 1, j);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if (i > 0 && (j + 1) < cols && arr[i - 1][j + 1] == 1) {
+                        int adjY = getNodeIndex(cols, i - 1, j + 1);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if (j > 0 && arr[i][j - 1] == 1) {
+                        int adjY = getNodeIndex(cols, i, j - 1);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if ((j + 1) < cols && arr[i][j + 1] == 1) {
+                        int adjY = getNodeIndex(cols, i, j + 1);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if ((i + 1) < rows && j > 0 && arr[i + 1][j - 1] == 1) {
+                        int adjY = getNodeIndex(cols, i + 1, j - 1);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if ((i + 1) < rows && arr[i + 1][j] == 1) {
+                        int adjY = getNodeIndex(cols, i + 1, j);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                    if ((i + 1) < rows && (j + 1) < cols && arr[i + 1][j + 1] == 1) {
+                        int adjY = getNodeIndex(cols, i + 1, j + 1);
+                        adjMatrix[adjX][adjY] = 1;
+                        adjMatrix[adjY][adjX] = 1;
+                    }
+                }
+            }
+        }
+        return adjMatrix;
     }
 
+    private static int getNodeIndex(int cols, int i, int j) {
+        return (cols * i) + j;
+    }
+
+
     private static int findLargestRegion(int rows, int cols, int[][] adjMatrix) {
-        int indexSize = rows > cols ? rows : cols;
-        boolean[] visited = new boolean[indexSize];
-        int currentNode = fetchFirstNode(adjMatrix);
-        visited[currentNode] = true;
-        Stack<Integer> stack = new Stack<>();
-        stack.push(currentNode);
+        int indexSize = rows * cols;
         List<Integer> lengthList = new LinkedList<>();
-        int count = 1;
-        int oldCount;
-        while (!stack.isEmpty()) {
-            currentNode = stack.peek();
-            int nextElement = getUnvisitedChildNode(currentNode, adjMatrix, visited);
-            if (nextElement != -1) {
-                visited[nextElement] = true;
-                stack.push(nextElement);
-                count += 2;
-            } else {
-                stack.pop();
-                oldCount = count;
-                count -= 2;
-                lengthList.add(oldCount);
+        for (int currentNode = 0; currentNode < indexSize; currentNode++) {
+            boolean[] visited = new boolean[indexSize];
+            visited[currentNode] = true;
+            Stack<Integer> stack = new Stack<>();
+            stack.push(currentNode);
+            int count = 1;
+            int oldCount;
+            while (!stack.isEmpty()) {
+                currentNode = stack.peek();
+                int nextElement = getUnvisitedChildNode(currentNode, adjMatrix, visited);
+                if (nextElement != -1) {
+                    visited[nextElement] = true;
+                    stack.push(nextElement);
+                    count++;
+                } else {
+                    stack.pop();
+                    oldCount = count;
+                    count--;
+                    lengthList.add(oldCount);
+                }
             }
         }
         return lengthList.isEmpty() ? 0 : Collections.max(lengthList);
@@ -73,21 +129,11 @@ public class ConnectedCellInAGrid {
 
     private static int getUnvisitedChildNode(int currentNode, int[][] adjMatrix, boolean[] visited) {
         for (int j = 0; j < adjMatrix.length; j++) {
-            if (adjMatrix[currentNode][j] > 0 && !visited[j] && Math.abs(j - currentNode) <= 1) {
+            if (adjMatrix[currentNode][j] > 0 && !visited[j]) {
                 return j;
             }
         }
         return -1;
     }
 
-    private static int fetchFirstNode(int[][] adjMatrix) {
-        for (int i = 0; i < adjMatrix.length; i++) {
-            for (int j = 0; j < adjMatrix.length; j++) {
-                if (adjMatrix[j][i] == 1) {
-                    return j;
-                }
-            }
-        }
-        return 0;
-    }
 }
