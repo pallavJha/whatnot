@@ -104,14 +104,15 @@ public class ConnectedCellInAGrid {
         List<Integer> lengthList = new LinkedList<>();
         for (int currentNode = 0; currentNode < indexSize; currentNode++) {
             boolean[] visited = new boolean[indexSize];
-            visited[currentNode] = true;
+            int node = currentNode;
+            visited[node] = true;
             Stack<Integer> stack = new Stack<>();
-            stack.push(currentNode);
+            stack.push(node);
             int count = 1;
             int oldCount;
             while (!stack.isEmpty()) {
-                currentNode = stack.peek();
-                int nextElement = getUnvisitedChildNode(currentNode, adjMatrix, visited);
+                node = stack.peek();
+                int nextElement = getUnvisitedChildNode(node, adjMatrix, visited);
                 if (nextElement != -1) {
                     visited[nextElement] = true;
                     stack.push(nextElement);
@@ -128,12 +129,35 @@ public class ConnectedCellInAGrid {
     }
 
     private static int getUnvisitedChildNode(int currentNode, int[][] adjMatrix, boolean[] visited) {
+        List<Integer> unvisitedNodes = new LinkedList<>();
         for (int j = 0; j < adjMatrix.length; j++) {
             if (adjMatrix[currentNode][j] > 0 && !visited[j]) {
-                return j;
+                unvisitedNodes.add(j);
             }
         }
-        return -1;
+        if (unvisitedNodes.size() == 2) {
+            int a = unvisitedNodes.get(0);
+            int b = unvisitedNodes.get(1);
+            List<Integer> aList = getUnvisitedNodes(a, adjMatrix, visited);
+            List<Integer> bList = getUnvisitedNodes(b, adjMatrix, visited);
+            if (aList.contains(b) && bList.contains(a)) {
+                return aList.size() > bList.size() ? b : a;
+            } else {
+                return aList.size() > bList.size() ? a : b;
+            }
+        } else {
+            return !unvisitedNodes.isEmpty() ? unvisitedNodes.get(0) : -1;
+        }
+    }
+
+    private static List<Integer> getUnvisitedNodes(int currentNode, int[][] adjMatrix, boolean[] visited) {
+        List<Integer> unvisitedNodes = new LinkedList<>();
+        for (int j = 0; j < adjMatrix.length; j++) {
+            if (adjMatrix[currentNode][j] > 0 && !visited[j]) {
+                unvisitedNodes.add(j);
+            }
+        }
+        return unvisitedNodes;
     }
 
 }
