@@ -24,7 +24,7 @@ p q r s t
 u v w x y
 This fulfills the condition since the rows 1, 2, ..., 5 and the columns 1, 2, ..., 5 are all lexicographically sorted.
  */
-package pl.misc.hackerank.unmanaged;
+package pl.misc.hackerank.greedy;
 
 import java.util.Arrays;
 import java.util.Scanner;

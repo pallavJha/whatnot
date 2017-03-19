@@ -1,4 +1,4 @@
-package pl.misc.hackerank.unmanaged;
+package pl.misc.hackerank.greedy;
 
 import java.util.Collections;
 import java.util.List;
