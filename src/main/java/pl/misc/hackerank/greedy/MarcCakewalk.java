@@ -26,7 +26,7 @@ public class MarcCakewalk {
 		Collections.sort(list, Collections.reverseOrder());
 		long distance = 0;
 		for (int i = 0; i < n; i++) {
-			distance += (list.get(i) * (int)(Math.pow(2, i))); 
+			distance += (list.get(i) * (long)(Math.pow(2, i))); 
 		}
 		return distance;
 	}
