@@ -39,9 +39,14 @@ public class LargestPermutation {
 		sc.close();
 	}
 
+	private static void updateSortedArr() {
+		
+	}
+
 	private static int[] findMax(Integer[] arr, int initialIndex) {
 		int max = sortedArr[initialIndex].value;
 		int index = sortedArr[initialIndex].index;
+		
 		/*
 		 * for (int i = initialIndex; i < arr.length; i++) { if (max < arr[i]) {
 		 * max = arr[i]; index = i; } }
