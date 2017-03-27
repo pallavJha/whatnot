@@ -2,31 +2,36 @@ package pl.misc.hackerank.greedy;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class LargestPermutation {
-
-	private static Integer[] arr;
-	private static Pair[] sortedArr;
-
+	
+	private static Integer[] arr, sortedArr;
+	private static Map<Integer, Integer> indexMap = new HashMap<>(); 
+	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
 		int k = sc.nextInt();
 		arr = new Integer[n];
-
+		sortedArr = new Integer[n];
 		for (int i = 0; i < n; i++) {
 			arr[i] = sc.nextInt();
+			sortedArr[i] = arr[i];
+			indexMap.put(arr[i], i);
 		}
-
-		sortedArr = sortArr(arr);
+		
+		Arrays.sort(sortedArr, Collections.reverseOrder());
 
 		for (int i = 0; i < n; i++) {
-			int[] valAndIndex = findMax(arr, i);
+			int[] valAndIndex = findMax(i);
 			if (valAndIndex[1] != i) {
 				arr[valAndIndex[1]] = arr[i];
 				arr[i] = valAndIndex[0];
 				k--;
+				updateIndexMap(valAndIndex[0], i, arr[valAndIndex[1]], valAndIndex[1]);
 			}
 			if (k == 0) {
 				break;
@@ -39,43 +44,14 @@ public class LargestPermutation {
 		sc.close();
 	}
 
-	private static void updateSortedArr() {
-		
-	}
-
-	private static int[] findMax(Integer[] arr, int initialIndex) {
-		int max = sortedArr[initialIndex].value;
-		int index = sortedArr[initialIndex].index;
-		
-		/*
-		 * for (int i = initialIndex; i < arr.length; i++) { if (max < arr[i]) {
-		 * max = arr[i]; index = i; } }
-		 */
+	private static int[] findMax(int initialIndex) {
+		int max = sortedArr[initialIndex];
+		int index = indexMap.get(max);
 		return new int[] { max, index };
 	}
-
-	private static Pair[] sortArr(Integer[] arr) {
-		Pair[] sortedArr = new Pair[arr.length];
-		for (int i = 0; i < arr.length; i++) {
-			Pair p = new Pair(i, arr[i]);
-			sortedArr[i] = p;
-		}
-		Arrays.sort(sortedArr, Collections.reverseOrder());
-		return sortedArr;
-	}
-}
-
-class Pair implements Comparable<Pair> {
-	public final int index;
-	public final int value;
-
-	public Pair(int index, int value) {
-		this.index = index;
-		this.value = value;
-	}
-
-	@Override
-	public int compareTo(Pair other) {
-		return Integer.compare(this.value, other.value);
+	
+	private static void updateIndexMap(int newValue, int newIndex, int oldValue, int oldIndex) {
+		indexMap.put(newValue, newIndex);
+		indexMap.put(oldValue, oldIndex);
 	}
 }
