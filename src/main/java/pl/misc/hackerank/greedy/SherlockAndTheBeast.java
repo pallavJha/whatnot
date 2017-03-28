@@ -57,12 +57,11 @@ public class SherlockAndTheBeast {
 		for (String a : s) {
 			System.out.println(a);
 		}
+		in.close();
 	}
 
 	public static void main2(String args[]) {
 		long start = System.currentTimeMillis();
-		int n = 57634;
-		int k = 10;
 		/*
 		 * String s = ""; for (int j = 0; j < n; j++) { s = s + "5"; } for (int
 		 * j = 0; j < k; j++) { s = s + "3"; }

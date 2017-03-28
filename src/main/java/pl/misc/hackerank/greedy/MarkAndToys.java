@@ -30,7 +30,7 @@ public class MarkAndToys {
             }
         }
         System.out.println(toys);
-        
+        sc.close();
     }
 
 }
