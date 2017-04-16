@@ -1,5 +1,7 @@
 package pl.misc.hackerank.dp;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -20,78 +22,55 @@ Sample Output
 197
 3
 */
+/**
+ * Go Reverse
+ */
 public class StockMaximize {
 
 	public static void main(String[] args) {
-
+		
 		Scanner sc = new Scanner(System.in);
-		long noOfShares = 0, expense = 0, earning = 0;
-		int n = sc.nextInt();
-		long arr[][] = new long[n][];
-		for (int i = 0; i < n; i++) {
-			int arr_size = sc.nextInt();
-			arr[i] = new long[arr_size];
-			for (int j = 0; j < arr_size; j++) {
-				arr[i][j] = sc.nextLong();
+		int noOfTestCases = sc.nextInt();
+		List<Long> allProfits = new LinkedList<>();
+		for (int i = 0; i < noOfTestCases; i++) {
+			int arrSize = sc.nextInt();
+			long[] prices = new long[arrSize];
+			for (int j = 0; j < prices.length; j++) {
+				prices[j] = sc.nextLong();
 			}
+			allProfits.add(stockMaximize(prices));
 		}
 		sc.close();
-		
-		for (int i = 0; i < arr.length; i++) {
-			/*for (int j = 0; j < arr[i].length; j++) {
-				if(j == (arr[i].length -1)){
-					if(arr[i][j] > arr[i][j-1]){
-						earning += (noOfShares * arr[i][j]);
-						noOfShares = 0;
-					}
+		System.out.println(allProfits);
+	}
+
+	public static long stockMaximize(long[] prices) {
+		long profit = 0;
+		int sellAt = prices.length - 1;
+		for	 (int i = prices.length - 2; i > -1; i--) {
+			if (prices[i] < prices[sellAt]) {
+				if (i == 0) {
+					profit += business(prices, 0, sellAt);
 				}
-				else{
-					if (arr[i][j] < arr[i][j + 1]) {
-						noOfShares++;
-						expense += arr[i][j];
-					} 
-					else if (arr[i][j] > arr[i][j + 1]) {
-						earning += (noOfShares * arr[i][j]);
-						noOfShares = 0;
-					}
-				}
-			}*/
-			System.out.println(maxProfitStrategy(arr[i]));
-			System.out.println(earning - expense);
-			earning = expense = noOfShares = 0;
+			} else {
+				profit += business(prices, i + 1, sellAt);
+				sellAt = i;
+			}
 		}
-	}
-	
-	public static long maxProfitStrategy(long[] a) {
-	    int n = a.length;
-	    int memo[] = new int[n];
-	    memo[0] = -1;
-	    for (int i = 1; i < n; i++) {
-	        int j = i - 1;
-	        while (a[j] < a[i] && memo[j] != -1) {
-	            j = memo[j];
-	        }
-	        if (a[j] > a[i]) {
-	            memo[i] = j;
-	        } else {
-	            memo[i] = memo[j];
-	        }
-	    }
-	    return calculateProfit(a,memo);
+		return profit;
 	}
 
-	private static long calculateProfit(long[] a, int[] memo) {
-	    long profit = 0;
-	    int n = a.length;
-	    for (int i = n - 1; i > 0; ) {
-	        int end = i;
-	        int start = memo[i] + 1;
-
-	        for (int j = start; j < end; j++) {
-	            profit += a[end] - a[j];
-	        }
-	        i = memo[i];
-	    }
-	    return profit;
+	public static long business(long[] prices, int buyFrom, int sellAt) {
+		if (buyFrom == sellAt) {
+			return 0L;
+		}
+		long totalCost = 0;
+		int totalShares = 0;
+		for (int i = buyFrom; i < sellAt; i++) {
+			totalCost += prices[i];
+			totalShares++;
+		}
+		System.out.println((prices[sellAt] * totalShares) - totalCost);
+		return (prices[sellAt] * totalShares) - totalCost;
 	}
 }
