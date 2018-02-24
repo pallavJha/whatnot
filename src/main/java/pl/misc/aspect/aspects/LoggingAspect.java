@@ -40,8 +40,8 @@ public class LoggingAspect {
         System.out.println("Method has thrown. The value : " + name);
     }
 
-    @After("@annotation(pl.misc.aspect.aspects.annotations.Rollable)")
-    public void recordARoll() {
+    @Around("@annotation(pl.misc.aspect.aspects.annotations.Rollable)")
+    public void recordARoll(JoinPoint joinPoint) {
         System.out.println("Rolling Recorded!!!!!!");
     }
 }
