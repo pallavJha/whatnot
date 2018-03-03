@@ -5,6 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * Input : 3
+ * Output :
+ * 1, 2, 3
+ * 8, 9, 4
+ * 7, 6, 5
+ *
  * @author pallav
  * @version 1.0
  * @since 3/3/18
