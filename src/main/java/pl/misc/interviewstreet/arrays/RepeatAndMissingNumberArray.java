@@ -1,6 +1,8 @@
 package pl.misc.interviewstreet.arrays;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Repeat And Missing Number Array
@@ -57,6 +59,7 @@ public class RepeatAndMissingNumberArray {
         return new int[]{a, Math.abs(thisSum - sum - a)};
     }
 
+
     /**
      * let a, b be the duplicate number and missing number resp.
      * find sum of n terms which will be sum;
@@ -88,12 +91,5 @@ public class RepeatAndMissingNumberArray {
         int b = abSum - a;
 
         return new int[]{a, b};
-    }
-
-    public static void main(String[] args) {
-        System.out.println(repeatedNumber(new int[]{1, 3, 3, 4}));
-        System.out.println(repeatedNumber(new int[]{1, 1, 3, 4}));
-        System.out.println(repeatedNumber(new int[]{1, 3, 2, 2}));
-        System.out.println(repeatedNumber(new int[]{1, 3, 2, 4}));
     }
 }
