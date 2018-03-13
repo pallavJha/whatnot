@@ -7,7 +7,7 @@ import java.util.*;
  * @version 1.0
  * @since 4/3/18
  */
-public class FindMissingInteger {
+public class FirstMissingInteger {
 
     private static int getMissingInteger(ArrayList<Integer> A) {
         Iterator<Integer> iterator = A.iterator();
