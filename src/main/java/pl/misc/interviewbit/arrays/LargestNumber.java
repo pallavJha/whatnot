@@ -1,8 +1,17 @@
-package pl.misc.interviewstreet.arrays;
+package pl.misc.interviewbit.arrays;
 
 import java.util.*;
 
 /**
+ * interviewbit Largest Number Solution
+ * Given a list of non negative integers, arrange them such that they form the largest number.
+ * <p>
+ * For example:
+ * <p>
+ * Given [3, 30, 34, 5, 9], the largest formed number is 9534330.
+ * <p>
+ * Note: The result may be very large, so you need to return a string instead of an integer.
+ *
  * @author pallav
  * @version 1.0
  * @since 3/3/18

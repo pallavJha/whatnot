@@ -1,4 +1,4 @@
-package pl.misc.interviewstreet.arrays;
+package pl.misc.interviewbit.arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;

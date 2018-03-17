@@ -1,8 +1,9 @@
-package pl.misc.interviewstreet.arrays;
+package pl.misc.interviewbit.arrays;
 
 import java.util.ArrayList;
 
 /**
+ * <h2>Interviewbit Add One to Number Solution</h2>
  * Given a non-negative number represented as an array of digits,
  * <p>
  * add 1 to the number ( increment the number represented by the digits ).
@@ -23,15 +24,15 @@ import java.util.ArrayList;
  */
 public class AddOneToNumber {
 
-    public ArrayList<Integer> plusOne(ArrayList<Integer> A) {
-        plusOne(A, A.size() - 1);
+    public ArrayList<Integer> plusOneAnotherSolution(ArrayList<Integer> A) {
+        plusOneAnotherSolution(A, A.size() - 1);
         while (A.get(0) != null && A.get(0).equals(0)) {
             A.remove(0);
         }
         return A;
     }
 
-    private void plusOne(ArrayList<Integer> A, int index) {
+    private void plusOneAnotherSolution(ArrayList<Integer> A, int index) {
         if (index == -1) {
             A.add(0, 0);
             index = 0;
@@ -41,11 +42,11 @@ public class AddOneToNumber {
         int actualSum = sum % 10;
         A.set(index, actualSum);
         if (carry > 0) {
-            plusOne(A, index - 1);
+            plusOneAnotherSolution(A, index - 1);
         }
     }
 
-    public ArrayList<Integer> plusOneAnotherSolution(ArrayList<Integer> A) {
+    public ArrayList<Integer> plusOne(ArrayList<Integer> A) {
         String numAsString = A.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", "").replaceAll("\\s", "");
         java.math.BigInteger a = new java.math.BigInteger(numAsString);
         a = a.add(java.math.BigInteger.ONE);

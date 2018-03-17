@@ -1,8 +1,19 @@
-package pl.misc.interviewstreet.arrays;
+package pl.misc.interviewbit.arrays;
 
 import java.util.*;
 
 /**
+ * Interviewbit Max Sum Contiguous Subarray Solution
+ * Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
+ * <p>
+ * For example:
+ * <p>
+ * Given the array [-2,1,-3,4,-1,2,1,-5,4],
+ * <p>
+ * the contiguous subarray [4,-1,2,1] has the largest sum = 6.
+ * <p>
+ * For this problem, return the maximum sum.
+ *
  * @author pallav
  * @version 1.0
  * @since 22/2/18

@@ -1,10 +1,10 @@
-package pl.misc.interviewstreet.arrays;
+package pl.misc.interviewbit.arrays;
 
 import java.util.ArrayList;
 
 /**
  * <h4>
- * Merge Intervals
+ * interviewbit Merge Intervals Solutions
  * </h4>
  * Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
  * <p>
