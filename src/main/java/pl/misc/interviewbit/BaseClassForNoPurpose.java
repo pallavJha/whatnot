@@ -1,4 +1,4 @@
-package pl.misc.interviewstreet;
+package pl.misc.interviewbit;
 
 /**
  * @author pallav

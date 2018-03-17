@@ -1,4 +1,4 @@
-package pl.misc.interviewstreet.checkpoints;
+package pl.misc.interviewbit.checkpoints;
 
 /**
  * Interviewstreet Prettyprint Solution
