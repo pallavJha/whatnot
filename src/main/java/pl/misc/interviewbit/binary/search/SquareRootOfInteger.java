@@ -71,4 +71,8 @@ public class SquareRootOfInteger {
     public static void main(String[] args) {
         System.out.println(getSquareRoot(930675566));
     }
+
+    private SquareRootOfInteger() {
+
+    }
 }
