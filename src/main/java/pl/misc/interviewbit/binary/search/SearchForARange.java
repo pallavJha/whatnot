@@ -5,18 +5,21 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * interviewbit Count Element Occurrence solution
- * Given a sorted array of integers, find the number of occurrences of a given target value.
- * Your algorithm’s runtime complexity must be in the order of O(log n).
- * If the target is not found in the array, return 0
+ * interviewbit solution Search For A Range
+ * <p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
  * <p>
- * *Example : **
- * Given [5, 7, 7, 8, 8, 10] and target value 8,
- * return 2.
+ * <p>Your algorithm’s runtime complexity must be in the order of <code>O(log n)</code>.</p>
  * <p>
- * PROBLEM APPROACH :
+ * <p>If the target is not found in the array, return <code>[-1, -1]</code>.</p>
  * <p>
- * For complete solution, look at the hint.
+ * <p><strong>Example:</strong></p>
+ * <p>
+ * <p>Given <code>[5, 7, 7, 8, 8, 10]</code></p>
+ * <p>
+ * <p>and target value <code>8</code>,</p>
+ * <p>
+ * <p>return <code>[3, 4]</code>.</p>
+ * <p>
  *
  * @author Pallav Jha
  * @since 17/3/18
@@ -24,89 +27,71 @@ import java.util.List;
 public class SearchForARange {
 
     public static ArrayList<Integer> findCount(final List<Integer> A, int B) {
+
         ArrayList<Integer> returnList = new ArrayList<>(2);
-        int location = 0;
-        int index = -1;
+        int index = binarySearch(A, B);
+        if (index < 0) {
+            returnList.add(-1);
+            returnList.add(-1);
+            return returnList;
+        } else {
+            returnList.add(index);
+            returnList.add(index);
+        }
+        int leftIndex = binarySearch(A, B - 1);
+        leftIndex = leftIndex < 0 ? Math.abs(leftIndex + 1) : leftIndex;
+        if (leftIndex > -1) {
+            for (int i = leftIndex; i <= index; i++) {
+                if (A.get(i) == B) {
+                    returnList.set(0, i);
+                    break;
+                }
+            }
+        }
+
+        int rightIndex = binarySearch(A, B + 1);
+        rightIndex = rightIndex < 0 ? Math.abs(rightIndex + 1) : rightIndex;
+        if (rightIndex > -1) {
+            for (int i = rightIndex; i >= index; i--) {
+                if (i < A.size() && A.get(i) == B) {
+                    returnList.set(1, i);
+                    break;
+                }
+            }
+        }
+        return returnList;
+    }
+
+
+    public static int binarySearch(List<Integer> A, int target) {
+
         int low = 0;
         int high = A.size() - 1;
         while (low <= high) {
             int mid = (low + high) / 2;
-            int currentElement = A.get(mid);
-            if (currentElement == B) {
-                index = mid;
-                break;
-            }
-            if (B > currentElement) {
-                low = mid + 1;
-            } else if (B < currentElement) {
-                high = mid - 1;
-            }
-        }
-        if (index == -1) {
-            returnList.add(-1);
-            returnList.add(-1);
-            return returnList;
-        }
-        if (index == 0) {
-            for (int i = 0; i < A.size(); i++) {
-                if (B == A.get(i)) {
-                    location = i;
+            int currentElem = A.get(mid);
+            if (currentElem == target) {
+                return mid;
+            } else {
+                if (target < currentElem) {
+                    high = mid - 1;
                 } else {
-                    break;
+                    low = mid + 1;
                 }
             }
-            returnList.add(0);
-            returnList.add(location);
-            return returnList;
         }
-        if (index == A.size() - 1) {
-            for (int i = A.size() - 1; i > -1; i--) {
-                if (B == A.get(i)) {
-                    location = i;
-                } else {
-                    break;
-                }
-            }
-            returnList.add(location);
-            returnList.add(index);
-            return returnList;
-        }
-
-        if (A.get(index - 1) == B) {
-            for (int i = index - 1; i > -1; i--) {
-                if (B == A.get(i)) {
-                    location = i;
-                } else {
-                    break;
-                }
-            }
-        } else {
-            location = index;
-        }
-        returnList.add(location);
-        if (A.get(index + 1) == B) {
-            for (int i = index + 1; i < A.size(); i++) {
-                if (B == A.get(i)) {
-                    location = i;
-                } else {
-                    break;
-                }
-            }
-        } else {
-            location = index;
-        }
-        returnList.add(location);
-
-        return returnList;
+        return -(low + 1);
     }
 
     public static void main(String[] args) {
-        ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(5, 7, 7, 8, 8, 10));
+        ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(5, 7, 7, 8, 8, 10, 10, 10));
         System.out.println(findCount(arrayList, 5));
+        System.out.println(findCount(arrayList, 7));
         System.out.println(findCount(arrayList, 10));
-        System.out.println(findCount(arrayList, 8));
-        System.out.println(findCount(arrayList, 81));
+        System.out.println(findCount(arrayList, 45));
 
+        arrayList = new ArrayList<>(Arrays.asList(10, 10, 10));
+        System.out.println(findCount(arrayList, 10));
 
     }
 }
