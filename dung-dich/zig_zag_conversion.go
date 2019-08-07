@@ -1,7 +1,9 @@
 package main
 
-import "time"
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 // convert
 // PAYPALISHIRING
@@ -9,12 +11,8 @@ import "fmt"
 // A P L S I I G
 // Y   I   R
 // PAHNAPLSIIGYIR
-func convert(s string, numRows int) string {
-	return ""
-}
 
-var incr bool = true
-var currentValue int = 0
+var incr = true
 
 func NextVal(currentValue int, numRows int) int {
 	if incr {
