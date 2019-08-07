@@ -33,7 +33,7 @@ func twoSum(nums []int, target int) []int {
 		}
 		indexOfOtherElement, ok := elementToIndex[otherElement]
 		if ok {
-			if (indexOfOtherElement > index) {
+			if indexOfOtherElement > index {
 				return []int{index, indexOfOtherElement}
 			}
 			return []int{indexOfOtherElement, index}
