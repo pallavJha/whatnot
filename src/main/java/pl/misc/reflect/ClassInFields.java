@@ -2,11 +2,7 @@ package pl.misc.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -26,25 +22,25 @@ public class ClassInFields {
      * The ignored classes.
      * Contains the classes which needs to be ignored.
      */
-    static Set<Class<?>> ignoredClasses = getWrapperTypes();
+    private static Set<Class<?>> ignoredClasses = getWrapperTypes();
 
     /**
      * The classes.
      * Contains the fields of the current class, it'll keep on growing.
      */
-    static List<Class<?>> classes = new ArrayList<>();
+    private static List<Class<?>> classes = new ArrayList<>();
 
     /**
      * The z.
      * Initial Class
      **/
-    static Class<?> z = String.class;
+    private static Class<?> z = String.class;
 
     /**
      * The field array.
      */
-    static Field[] fieldArray;
-    static Integer i = 0;
+    private static Field[] fieldArray;
+    private static Integer i = 0;
 
     static {
         classes.add(z);
@@ -54,9 +50,8 @@ public class ClassInFields {
      * The main method.
      *
      * @param strings the arguments
-     * @throws Throwable the throwable
      */
-    public static void main(String... strings) throws Throwable {
+    public static void main(String... strings) {
         extractFields();
     }
 
@@ -65,13 +60,13 @@ public class ClassInFields {
      *
      * @param z the z
      */
-    public static void getDateTime(Class<?> z) {
+    private static void getDateTime(Class<?> z) {
 
         for (Field f : fieldArray) {
 
             if (!(f.getType().isPrimitive()) && !ignoredClasses.contains(f.getType())) {
-                
-                /*  
+
+                /*
                  * This condition checks for the occurence of the desired class
                  *           ^
                  *         /   \
@@ -91,8 +86,8 @@ public class ClassInFields {
                     System.out.println(z + "\t");
                     continue;
                 }
-                
-                /*  
+
+                /*
                  * This condition checks the generic type of the collection api objects
                  *           ^
                  *         /   \
@@ -124,11 +119,11 @@ public class ClassInFields {
     /**
      * Extract fields.
      */
-    public static void extractFields() {
+    private static void extractFields() {
 
-        for (int i = 0; i < classes.size(); i++) {
-            fieldArray = classes.get(i).getDeclaredFields();
-            getDateTime(classes.get(i));
+        for (Class<?> aClass : classes) {
+            fieldArray = aClass.getDeclaredFields();
+            getDateTime(aClass);
         }
     }
 
@@ -137,7 +132,7 @@ public class ClassInFields {
      *
      * @return the wrapper types
      */
-    public static Set<Class<?>> getWrapperTypes() {
+    private static Set<Class<?>> getWrapperTypes() {
         Set<Class<?>> ret = new HashSet<>();
         ret.add(Boolean.class);
         ret.add(Character.class);
