@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// TODO: Not optimal
 func main() {
 	value := orangesRotting([][]int{
 		{2, 1, 1},
