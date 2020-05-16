@@ -3,10 +3,18 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println(nthPersonGetsNthSeat(24))
+	fmt.Println(nthPersonGetsNthSeatBruteForce(24))
 }
 
 func nthPersonGetsNthSeat(n int) float64 {
+	if n == 1 {
+		return 1
+	}
+	return 0.5
+}
+
+
+func nthPersonGetsNthSeatBruteForce(n int) float64 {
 	if n == 1 {
 		return 1
 	}
