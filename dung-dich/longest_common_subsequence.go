@@ -4,76 +4,69 @@ import (
 	"fmt"
 )
 
-// TODO: Not Solved
 func main() {
 	fmt.Println(longestCommonSubsequence("mhunuzqrkzsnidwbun", "szulspmhwpazoxijwbq"))
-	longestCommonSubsequenceBruteForce("mhunuzqrkzsnidwbun", "szulspmhwpazoxijwbq")
+	fmt.Println(longestCommonSubsequence("abcde", "ade"))
 }
 
 func longestCommonSubsequence(text1 string, text2 string) int {
-	var l, s []rune
-	if len(text1) > len(text2) {
-		l = []rune(text1)
-		s = []rune(text2)
-	} else {
-		l = []rune(text2)
-		s = []rune(text1)
-	}
-
-	var lCache = make(map[rune][]int)
-	for i, r := range l {
-		if _, ok := lCache[r]; !ok {
-			lCache[r] = []int{i}
-		} else {
-			lCache[r] = append(lCache[r], i)
+	cache := make([][]int, len(text1))
+	for i, _ := range cache {
+		cache[i] = make([]int, len(text2))
+		for j, _ := range cache[i] {
+			cache[i][j] = -1
 		}
 	}
-
-	maxLCSLength := 0
-	length := 0
-	prevIndex := -1
-	for i := 0; i < len(s); i++ {
-		for j := i; j < len(s); j++ {
-			if indexes, ok := lCache[s[j]]; ok {
-				for _, index := range indexes {
-					if index > prevIndex {
-						prevIndex = index
-						length++
-						break
-					}
-				}
-			}
-		}
-		if maxLCSLength < length {
-			maxLCSLength = length
-		}
-		length = 0
-		prevIndex = -1
-	}
-
-	return maxLCSLength
+	return longestCommonSubsequenceBruteForceWithCaching(text1, text2, 0, 0, cache)
 }
 
-func longestCommonSubsequenceBruteForce(text1 string, text2 string) int {
-	var l, s []rune
-	l = []rune(text1)
-	s = []rune(text2)
-
-	var startJ = 0
-	for k := 0; k < len(l); k++ {
-		println()
-		println("----------------------")
-		startJ = 0
-		for i := k; i < len(l); i++ {
-			for j := startJ; j < len(s); j++ {
-				if l[i] == s[j] {
-					print(string(l[i]))
-					startJ = j + 1
-					break
-				}
-			}
+func longestCommonSubsequenceDP(text1, text2 string) int {
+	cache := make([][]int, len(text1)+1)
+	for i, _ := range cache {
+		cache[i] = make([]int, len(text2)+1)
+		for j, _ := range cache[i] {
+			cache[i][j] = 0
 		}
 	}
+}
 
-	return 0
+func longestCommonSubsequenceBruteForceWithCaching(text1 string, text2 string, i, j int, cache [][]int) int {
+	if i == len(text1) {
+		return 0
+	} else if j == len(text2) {
+		return 0
+	}
+	if -1 != cache[i][j] {
+		return cache[i][j]
+	}
+
+	if text1[i] == text2[j] {
+		return 1 + longestCommonSubsequenceBruteForceWithCaching(text1, text2, i+1, j+1, cache)
+	}
+	out1 := longestCommonSubsequenceBruteForceWithCaching(text1, text2, i, j+1, cache)
+	out2 := longestCommonSubsequenceBruteForceWithCaching(text1, text2, i+1, j, cache)
+	if out1 > out2 {
+		cache[i][j] = out1
+		return out1
+	}
+	cache[i][j] = out2
+	return out2
+}
+
+func longestCommonSubsequenceBruteForce(text1 string, text2 string, i, j int) int {
+	if i == len(text1) {
+		return 0
+	} else if j == len(text2) {
+		return 0
+	}
+
+	if text1[i] == text2[j] {
+		return 1 + longestCommonSubsequenceBruteForce(text1, text2, i+1, j+1)
+	}
+	out1 := longestCommonSubsequenceBruteForce(text1, text2, i, j+1)
+	out2 := longestCommonSubsequenceBruteForce(text1, text2, i+1, j)
+	if out1 > out2 {
+		return out1
+	}
+	return out2
 }
