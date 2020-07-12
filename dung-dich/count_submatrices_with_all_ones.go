@@ -53,23 +53,30 @@ func numSubmat(mat [][]int) int {
 		}
 	}
 
-	// for _, arr := range depthWidthCache {
-	// 	fmt.Println("%v", arr)
-	// }
+	for _, arr := range depthWidthCache {
+		fmt.Println("%v", arr)
+	}
 
 	for i := 0; i < len(mat); i++ {
 		for j := 0; j < len(mat[0]); j++ {
 			currentDepth := depthWidthCache[i][j][0]
 			currentWidth := depthWidthCache[i][j][1]
 			if currentDepth == 0 && currentWidth == 0 {
+				// if the current element is 0 then don't proceed
+				// and don't increase the count as well
 				continue
 			} else if currentDepth == 1 || currentWidth == 1 {
 				if currentDepth == 1 && currentWidth == 1 {
+					// this section means that we've found a 1
+					// but it doesn't have any neighbour that is also 1
 					numberOfSubMats++
 				} else {
+					// this section checks for the 1D matrix
 					if currentDepth == 1 {
+						// add the width
 						numberOfSubMats += currentWidth
 					} else {
+						// add the height
 						numberOfSubMats += currentDepth
 					}
 				}
