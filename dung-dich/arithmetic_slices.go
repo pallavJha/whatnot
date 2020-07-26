@@ -41,6 +41,8 @@ func numberOfArithmeticSlices(A []int) int {
 	}
 }
 
+// findNextArithmeticSlice return the starting index of the very encountered arithmetic slice.
+// Along with that it also returns difference between the two elements.
 func findNextArithmeticSlice(arr []int, from int) (int, int, bool) {
 	for i := from; i < len(arr); i++ {
 		curr := arr[i]
