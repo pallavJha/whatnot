@@ -21,8 +21,8 @@ func longestArithSeqLength(A []int) int {
 	for i := 0; i < len(A); i++ {
 		for j := i + 1; j < len(A); j++ {
 			diff := A[j] - A[i]
-			cacheMap := cache[i]
 			increment := false
+			cacheMap := cache[i]
 			oldCount, ok := cacheMap[diff]
 			if ok {
 				increment = true
