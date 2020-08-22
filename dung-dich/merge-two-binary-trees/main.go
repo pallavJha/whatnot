@@ -25,6 +25,7 @@ type TreeNode struct {
 }
 
 func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode {
+
 	if t1 == nil && t2 == nil {
 		return nil
 	}
