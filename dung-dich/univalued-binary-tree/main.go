@@ -22,17 +22,16 @@ func isUnivalTree(root *TreeNode) bool {
 }
 
 func preOrder(root *TreeNode) bool {
-	currentStatus := true
-	if root.Val != rootValue {
-		return false
-	}
-	leftStatus := true
-	if root.Left != nil {
-		leftStatus = preOrder(root.Left)
-	}
-	rightStatus := true
-	if root.Right != nil {
-		rightStatus = preOrder(root.Right)
-	}
-	return currentStatus && leftStatus && rightStatus
+    if root.Val != rootValue {
+        return false
+    }
+    leftStatus := true
+    if root.Left != nil {
+        leftStatus = preOrder(root.Left)
+    }
+    rightStatus := true
+    if root.Right != nil {
+        rightStatus = preOrder(root.Right)
+    }
+    return leftStatus && rightStatus
 }
