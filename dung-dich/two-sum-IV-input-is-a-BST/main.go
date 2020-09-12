@@ -20,22 +20,22 @@ func preOrder(node, theRoot *TreeNode, k int) bool {
 	if node == nil {
 		return false
 	}
-	if (findNodeBST(theRoot, node, k - node.Val)) {
+	if (binarySearch(theRoot, node, k - node.Val)) {
 		return true
 	}
 	return preOrder(node.Left, theRoot, k) || preOrder(node.Right, theRoot, k)
 
 }
 
-func findNodeBST(root, nodeToIgnore *TreeNode, k int) bool {
+func binarySearch(root, nodeToIgnore *TreeNode, k int) bool {
 	if root == nil {
 		return false
 	}
 	if root.Val == k && root != nodeToIgnore {
 		return true
 	} else if root.Val > k {
-		return findNodeBST(root.Left, nodeToIgnore, k)
+		return binarySearch(root.Left, nodeToIgnore, k)
 	} else {
-		return findNodeBST(root.Right, nodeToIgnore, k)
+		return binarySearch(root.Right, nodeToIgnore, k)
 	}
 }
