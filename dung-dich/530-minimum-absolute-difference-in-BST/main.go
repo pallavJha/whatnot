@@ -18,13 +18,13 @@ func getMinimumDifference(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	preOrder(root, math.MaxInt32)
+	inOrder(root, math.MaxInt32)
 	return minimumDifference
 }
 
-func preOrder(node *TreeNode, lastValue int) int {
+func inOrder(node *TreeNode, lastValue int) int {
 	if node.Left != nil {
-		lastValue = preOrder(node.Left, lastValue)
+		lastValue = inOrder(node.Left, lastValue)
 	}
 	difference := lastValue - node.Val
 	if difference < 0 {
@@ -35,7 +35,7 @@ func preOrder(node *TreeNode, lastValue int) int {
 	}
 	lastValue = node.Val
 	if node.Right != nil {
-		lastValue = preOrder(node.Right, lastValue)
+		lastValue = inOrder(node.Right, lastValue)
 	}
 	return lastValue
 }
