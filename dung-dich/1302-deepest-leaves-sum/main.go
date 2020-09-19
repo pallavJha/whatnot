@@ -1,3 +1,10 @@
+package main
+
+func main() {
+    deepestLeavesSum(nil)
+}
+
+
 type TreeNode struct {
     Val int
     Left *TreeNode
