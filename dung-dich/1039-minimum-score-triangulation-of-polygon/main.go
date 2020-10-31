@@ -59,27 +59,17 @@ func minScoreTriangulation(A []int) int {
 	start.Prev = temp
 	minSum = math.MaxInt32
 	cache = make(map[uint64]int)
-	minScoreTriangulationLLC(start, 0, len(A))
+	hash := createHash(start)
+	minScoreTriangulationLLC(start, 0, len(A), hash)
 	return minSum
 }
 
-func findHash(start *Node) uint64 {
-	temp := start
-	lowestIndexNode := temp
-	for temp != nil {
-		if temp.Index < lowestIndexNode.Index {
-			lowestIndexNode = temp
-		}
-		if temp.Next == start {
-			break
-		}
-		temp = temp.Next
-	}
+func createHash(start *Node) uint64 {
 	var hash uint64
-	temp = lowestIndexNode
+	temp := start
 	for temp != nil {
 		hash |= (1 << temp.Index)
-		if temp.Next == lowestIndexNode {
+		if temp.Next == start {
 			break
 		}
 		temp = temp.Next
@@ -87,34 +77,11 @@ func findHash(start *Node) uint64 {
 	return hash
 }
 
-func minScoreTriangulationLL(start *Node, sum, length int) {
-	if length == 3 {
-		sum += start.Val * start.Next.Val * start.Next.Next.Val
-		if minSum > sum {
-			minSum = sum
-		}
-		return
-	}
-	temp := start
-	for temp != nil {
-		removedNode := temp
-		sum += removedNode.Val * removedNode.Next.Val * removedNode.Prev.Val
-		removedNode.Prev.Next = removedNode.Next
-		removedNode.Next.Prev = removedNode.Prev
-		minScoreTriangulationLL(removedNode.Next, sum, length-1)
-		removedNode.Prev.Next = removedNode
-		removedNode.Next.Prev = removedNode
-		sum -= removedNode.Val * removedNode.Next.Val * removedNode.Prev.Val
-		if temp.Next == start {
-			break
-		}
-		temp = temp.Next
-	}
-	return
+func updateHash(currentHash uint64, indexToBeRemoved int) uint64 {
+	return currentHash ^ (1 << indexToBeRemoved)
 }
 
-func minScoreTriangulationLLC(start *Node, sum, length int) int {
-	hash := findHash(start)
+func minScoreTriangulationLLC(start *Node, sum, length int, hash uint64) int {
 	if cacheSum, ok := cache[hash]; ok {
 		sum += cacheSum
 		if minSum > sum {
@@ -136,7 +103,8 @@ func minScoreTriangulationLLC(start *Node, sum, length int) int {
 		sum += removedNode.Val * removedNode.Next.Val * removedNode.Prev.Val
 		removedNode.Prev.Next = removedNode.Next
 		removedNode.Next.Prev = removedNode.Prev
-		tempSum := minScoreTriangulationLLC(removedNode.Next, sum, length-1)
+		newHash := updateHash(hash, removedNode.Index)
+		tempSum := minScoreTriangulationLLC(removedNode.Next, sum, length-1, newHash)
 		if tempSum-sum+(removedNode.Val*removedNode.Next.Val*removedNode.Prev.Val) < currentSum {
 			currentSum = tempSum - sum + (removedNode.Val * removedNode.Next.Val * removedNode.Prev.Val)
 		}
