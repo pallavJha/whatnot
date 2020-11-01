@@ -64,11 +64,11 @@ func minScoreTriangulation(A []int) int {
 	temp.Next = start
 	start.Prev = temp
 	minSum = math.MaxInt32
-	minScoreTriangulationLL(start, 0, len(A))
+	minScoreTriangulationBruteForce(start, 0, len(A))
 	return minSum
 }
 
-func minScoreTriangulationLL(start *Node, sum, length int) {
+func minScoreTriangulationBruteForce(start *Node, sum, length int) {
 	if length == 3 {
 		sum += start.Val * start.Next.Val * start.Next.Next.Val
 		if minSum > sum {
@@ -78,14 +78,14 @@ func minScoreTriangulationLL(start *Node, sum, length int) {
 	}
 	temp := start
 	for temp != nil {
-		removedNode := temp
-		sum += removedNode.Val * removedNode.Next.Val * removedNode.Prev.Val
-		removedNode.Prev.Next = removedNode.Next
-		removedNode.Next.Prev = removedNode.Prev
-		minScoreTriangulationLL(removedNode.Next, sum, length-1)
-		removedNode.Prev.Next = removedNode
-		removedNode.Next.Prev = removedNode
-		sum -= removedNode.Val * removedNode.Next.Val * removedNode.Prev.Val
+		remove := temp
+		sum += remove.Val * remove.Next.Val * remove.Prev.Val
+		remove.Prev.Next = remove.Next
+		remove.Next.Prev = remove.Prev
+		minScoreTriangulationBruteForce(remove.Next, sum, length-1)
+		remove.Prev.Next = remove
+		remove.Next.Prev = remove
+		sum -= remove.Val * remove.Next.Val * remove.Prev.Val
 		if temp.Next == start {
 			break
 		}
